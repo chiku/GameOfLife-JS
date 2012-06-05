@@ -1,10 +1,20 @@
-"use strict";
+var World = function World() {
+	"use strict";
 
-var World = function () {
-	var cells = [];
-	
+	var cells = [],
+		shadows = [];
+
 	var addCell = function (cell) {
 		cells.push(cell);
+		Cell.corners.forEach(function (corner) {
+			var x = cell.x() + corner[0], y = cell.y() + corner[1];
+			if (!hasShadowAt(x, y) && !hasCellAt(x, y)) {
+				shadows.push(Cell({x: x, y: y}));
+			}
+		});
+		shadows = shadows.filter(function (shadow) {
+			return !shadow.isAt(cell.x(), cell.y());
+		});
 	};
 
 	var hasCellAt = function (x, y) {
@@ -13,8 +23,47 @@ var World = function () {
 		});
 	};
 
+	var hasShadowAt = function (x, y) {
+		return shadows.some(function (shadow) {
+			return shadow.isAt(x, y);
+		});
+	};
+
+	var tick = function () {
+		var newWorld = World();
+		cells.forEach(function (cell) {
+			var neighbourCount = cell.neighbourCount();
+			if (neighbourCount === 2 || neighbourCount === 3) {
+				Cell({x: cell.x(), y: cell.y()}).belongsTo(newWorld);
+			}
+		});
+		shadows.forEach(function (shadow) {
+			var neighbourCount = Cell.corners.reduce(function (sum, pair) {
+				return sum + (hasCellAt(shadow.x() + pair[0], shadow.y() + pair[1]) ? 1 : 0);
+			}, 0);
+			if (neighbourCount === 3) {
+				Cell({x: shadow.x(), y: shadow.y()}).belongsTo(newWorld);
+			}
+		});
+		return newWorld;
+	};
+
+	var dump = function() {
+		console.log('Cells');
+		cells.forEach(function (cell) {
+			console.log('(' + cell.x() + ', ' + cell.y() + ')')
+		});
+		console.log('Shadows');
+		shadows.forEach(function (cell) {
+			console.log('(' + cell.x() + ', ' + cell.y() + ')')
+		});
+	};
+
 	return {
 		addCell: addCell,
-		hasCellAt: hasCellAt
+		hasCellAt: hasCellAt,
+		hasShadowAt: hasShadowAt,
+		tick: tick,
+		dump: dump
 	};
 };

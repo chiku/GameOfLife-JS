@@ -1,6 +1,14 @@
 describe("Cell", function() {
   "use strict";
 
+  it("knows its x-coordinates", function() {
+    expect(Cell({x: 2, y: 10}).x()).toEqual(2);
+  });
+
+  it("knows its y-coordinates", function() {
+    expect(Cell({x: 2, y: 10}).y()).toEqual(10);
+  });
+
   describe("is at a location", function() {
     it("when coordinates match", function() {
       var cell = Cell({x: 10, y: 4});
