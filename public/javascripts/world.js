@@ -4,6 +4,14 @@ var World = function World() {
 	var cells = [],
 		shadows = [];
 
+	var allCells = function() {
+		return cells;
+	};
+
+	var allShadows = function() {
+		return shadows;
+	};
+
 	var addCell = function (cell) {
 		cells.push(cell);
 		World.corners.forEach(function (corner) {
@@ -18,53 +26,58 @@ var World = function World() {
 		});
 	};
 
-	var hasCellAt = function (x, y) {
-		return cells.some(function (cell) {
-			return cell.isAt(x, y);
-		});
+	var hasEntityAtFor = function (entities) {
+		return function (x, y) {
+			return entities().some(function (entity) {
+				return entity.isAt(x, y);
+			});
+		};
 	};
 
-	var hasShadowAt = function (x, y) {
-		return shadows.some(function (shadow) {
-			return shadow.isAt(x, y);
-		});
-	};
+	var hasCellAt = hasEntityAtFor(allCells);
+
+	var hasShadowAt = hasEntityAtFor(allShadows);
 
 	var neighbourCountAt = function (x, y) {
-		return World.corners.reduce(function (sum, pair) {
-			return sum + (hasCellAt(x + pair[0], y + pair[1]) ? 1 : 0);
+		return World.corners.reduce(function (sum, corner) {
+			return sum + (hasCellAt(x + corner[0], y + corner[1]) ? 1 : 0);
 		}, 0);
 	};
 
 	var tick = function () {
 		var newWorld = World();
-		cells.forEach(function (cell) {
-			var neighbourCount = cell.neighbourCount();
+
+		cells.forEach(function (entity) {
+			var neighbourCount = entity.neighbourCount();
 			if (neighbourCount === 2 || neighbourCount === 3) {
-				Cell({x: cell.x(), y: cell.y()}).belongsTo(newWorld);
+				Cell({x: entity.x(), y: entity.y()}).belongsTo(newWorld);
 			}
 		});
-		shadows.forEach(function (shadow) {
-			var neighbourCount = World.corners.reduce(function (sum, pair) {
-				return sum + (hasCellAt(shadow.x() + pair[0], shadow.y() + pair[1]) ? 1 : 0);
-			}, 0);
+
+		shadows.forEach(function (entity) {
+			var neighbourCount = neighbourCountAt(entity.x(), entity.y());
 			if (neighbourCount === 3) {
-				Cell({x: shadow.x(), y: shadow.y()}).belongsTo(newWorld);
+				Cell({x: entity.x(), y: entity.y()}).belongsTo(newWorld);
 			}
 		});
+
 		return newWorld;
+	};
+
+	var dumpFor = function(entities) {
+		return function() {
+			entities().forEach(function (entity) {
+				console.log('(' + entity.x() + ', ' + entity.y() + ')');
+			});
+		};
 	};
 
 	var dump = function() {
 		console.log('Cells');
-		cells.forEach(function (cell) {
-			console.log('(' + cell.x() + ', ' + cell.y() + ')')
-		});
+		dumpFor(allCells);
 
 		console.log('Shadows');
-		shadows.forEach(function (cell) {
-			console.log('(' + cell.x() + ', ' + cell.y() + ')')
-		});
+		dumpFor(allShadows);
 
 		return this;
 	};
