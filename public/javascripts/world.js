@@ -1,8 +1,11 @@
-var World = function World() {
+var World = function () {
 	"use strict";
 
 	var cells = [],
-		shadows = [];
+		shadows = [],
+		corners = function() {
+			return [[-1,-1], [-1,0], [-1,1], [0,-1], [0,1], [1,-1], [1,0], [1,1]];
+		};
 
 	var allCells = function() {
 		return cells;
@@ -14,7 +17,7 @@ var World = function World() {
 
 	var addCell = function (cell) {
 		cells.push(cell);
-		World.corners.forEach(function (corner) {
+		corners().forEach(function (corner) {
 			var x = cell.x() + corner[0],
 				y = cell.y() + corner[1];
 			if (!hasShadowAt(x, y) && !hasCellAt(x, y)) {
@@ -39,7 +42,7 @@ var World = function World() {
 	var hasShadowAt = hasEntityAtFor(allShadows);
 
 	var neighbourCountAt = function (x, y) {
-		return World.corners.reduce(function (sum, corner) {
+		return corners().reduce(function (sum, corner) {
 			return sum + (hasCellAt(x + corner[0], y + corner[1]) ? 1 : 0);
 		}, 0);
 	};
@@ -49,14 +52,18 @@ var World = function World() {
 
 		cells.forEach(function (entity) {
 			var neighbourCount = neighbourCountAt(entity.x(), entity.y());
-			if (neighbourCount === 2 || neighbourCount === 3) {
+			if (Rules.neighboursNeededForLiveCellToBeAlive.some(function (count) {
+				return neighbourCount === count;
+			})) {
 				Cell({x: entity.x(), y: entity.y()}).belongsTo(newWorld);
 			}
 		});
 
 		shadows.forEach(function (entity) {
 			var neighbourCount = neighbourCountAt(entity.x(), entity.y());
-			if (neighbourCount === 3) {
+			if (Rules.neighboursNeededForDeadCellToBeAlive.some(function (count) {
+				return neighbourCount === count;
+			})) {
 				Cell({x: entity.x(), y: entity.y()}).belongsTo(newWorld);
 			}
 		});
@@ -92,4 +99,3 @@ var World = function World() {
 	};
 };
 
-World.corners = [[-1,-1], [-1,0], [-1,1], [0,-1], [0,1], [1,-1], [1,0], [1,1]];
