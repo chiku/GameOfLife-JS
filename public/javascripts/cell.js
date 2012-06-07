@@ -24,9 +24,7 @@ var Cell = function (options) {
   };
 
   var neighbourCount = function () {
-    return Cell.corners.reduce(function (sum, pair) {
-      return sum + (world.hasCellAt(x + pair[0], y + pair[1]) ? 1 : 0);
-    }, 0);
+    return world.neighbourCountAt(x, y);
   };
 
   return {
@@ -37,5 +35,3 @@ var Cell = function (options) {
     neighbourCount: neighbourCount
   }
 };
-
-Cell.corners = [[-1,-1], [-1,0], [-1,1], [0,-1], [0,1], [1,-1], [1,0], [1,1]];

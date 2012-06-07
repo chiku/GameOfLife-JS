@@ -13,19 +13,19 @@ describe("Cell", function() {
     it("when coordinates match", function() {
       var cell = Cell({x: 10, y: 4});
       expect(cell.isAt(10, 4)).toBeTruthy();
-    })
+    });
   });
 
   describe("is not at the location", function() {
     it("when x-coordinates don't match'", function() {
       var cell = Cell({x: 10, y: 4});
       expect(cell.isAt(-10, 4)).toBeFalsy();
-    })
+    });
 
-    it("when y-coordinates don't match'", function() {
+    it("when y-coordinates don't match", function() {
       var cell = Cell({x: 10, y: 4});
       expect(cell.isAt(10, -4)).toBeFalsy();
-    })
+    });
   });
 
   describe("knows its neighbour count ", function() {
