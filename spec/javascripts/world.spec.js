@@ -61,6 +61,50 @@ describe("World", function() {
     });
   });
 
+  describe("knows neighbour count for alive cells", function() {
+    describe("when a cell is present at", function() {
+      [ ["south-west", -1, -1], ["west", -1, +0],  ["north-west", -1, +1],
+        ["south",      +0, -1],                    ["east",       +0, +1],
+        ["south-west", +1, -1], ["south", +1, +0], ["south-east", +1, +1]
+      ].forEach(function (options) {
+        var direction = options[0],
+            x = options[1],
+            y = options[2];
+
+        it(direction, function() {
+          var world = World();
+          var cell = Cell({x: 4, y: 10}).belongsTo(world);
+          var northNeighbour = Cell({x: 4+x, y: 10+y}).belongsTo(world);
+          expect(world.neighbourCountAt(4, 10)).toEqual(1);
+        });
+      });
+    });
+
+    describe("when none are present", function() {
+      it("is zero", function() {
+        var world = World();
+        var cell = Cell({x: 4, y: 10}).belongsTo(world);
+        expect(world.neighbourCountAt(4, 10)).toEqual(0);
+      });
+    });
+
+    describe("when all neighbours are present", function() {
+      it("is eight", function() {
+        var world = World();
+        var cell = Cell({x: 4, y: 10}).belongsTo(world);
+        Cell({x: 3, y: 9}).belongsTo(world);
+        Cell({x: 3, y: 10}).belongsTo(world);
+        Cell({x: 3, y: 11}).belongsTo(world);
+        Cell({x: 4, y: 9}).belongsTo(world);
+        Cell({x: 4, y: 11}).belongsTo(world);
+        Cell({x: 5, y: 9}).belongsTo(world);
+        Cell({x: 5, y: 10}).belongsTo(world);
+        Cell({x: 5, y: 11}).belongsTo(world);
+        expect(world.neighbourCountAt(4, 10)).toEqual(8);
+      });
+    });
+  });
+
   describe("on a tick", function() {
     describe("carries forward to next genaration a cell", function() {
       it("with 2 neighbours", function() {

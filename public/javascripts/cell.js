@@ -31,7 +31,6 @@ var Cell = function (options) {
     x: getX,
     y: getY,
     belongsTo: belongsTo,
-    isAt: isAt,
-    neighbourCount: neighbourCount
+    isAt: isAt
   }
 };

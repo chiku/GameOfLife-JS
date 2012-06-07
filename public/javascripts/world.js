@@ -48,7 +48,7 @@ var World = function World() {
 		var newWorld = World();
 
 		cells.forEach(function (entity) {
-			var neighbourCount = entity.neighbourCount();
+			var neighbourCount = neighbourCountAt(entity.x(), entity.y());
 			if (neighbourCount === 2 || neighbourCount === 3) {
 				Cell({x: entity.x(), y: entity.y()}).belongsTo(newWorld);
 			}
