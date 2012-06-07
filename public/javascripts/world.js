@@ -3,9 +3,8 @@ var World = function () {
 
 	var cells = [],
 		shadows = [],
-		corners = function() {
-			return [[-1,-1], [-1,0], [-1,1], [0,-1], [0,1], [1,-1], [1,0], [1,1]];
-		};
+		corners = [[-1,-1], [-1,0], [-1,1], [0,-1], [0,1], [1,-1], [1,0], [1,1]],
+		rules = Rules();
 
 	var allCells = function() {
 		return cells;
@@ -17,7 +16,7 @@ var World = function () {
 
 	var addCell = function (cell) {
 		cells.push(cell);
-		corners().forEach(function (corner) {
+		corners.forEach(function (corner) {
 			var x = cell.x() + corner[0],
 				y = cell.y() + corner[1];
 			if (!hasShadowAt(x, y) && !hasCellAt(x, y)) {
@@ -42,32 +41,42 @@ var World = function () {
 	var hasShadowAt = hasEntityAtFor(allShadows);
 
 	var neighbourCountAt = function (x, y) {
-		return corners().reduce(function (sum, corner) {
+		return corners.reduce(function (sum, corner) {
 			return sum + (hasCellAt(x + corner[0], y + corner[1]) ? 1 : 0);
 		}, 0);
 	};
 
+	var carryForwardFor = function (options) {
+		var entities = options.entities,
+			rule = options.rule;
+
+		return function (newWorld) {
+			entities().forEach(function (entity) {
+				var x = entity.x(),
+					y = entity.y(),
+					neighbourCount = neighbourCountAt(x, y);
+
+				if (rule(neighbourCount)) {
+					Cell({x: x, y: y}).belongsTo(newWorld);
+				}
+			});
+		};
+	}
+
+	var carryForwardCellsInto = carryForwardFor({
+		entities: allCells,
+		rule: rules.carryLiveCellForward
+	});
+
+	var carryForwardShadowsInto = carryForwardFor({
+		entities: allShadows,
+		rule: rules.carryDeadCellForward
+	});
+
 	var tick = function () {
 		var newWorld = World();
-
-		cells.forEach(function (entity) {
-			var neighbourCount = neighbourCountAt(entity.x(), entity.y());
-			if (Rules.neighboursNeededForLiveCellToBeAlive.some(function (count) {
-				return neighbourCount === count;
-			})) {
-				Cell({x: entity.x(), y: entity.y()}).belongsTo(newWorld);
-			}
-		});
-
-		shadows.forEach(function (entity) {
-			var neighbourCount = neighbourCountAt(entity.x(), entity.y());
-			if (Rules.neighboursNeededForDeadCellToBeAlive.some(function (count) {
-				return neighbourCount === count;
-			})) {
-				Cell({x: entity.x(), y: entity.y()}).belongsTo(newWorld);
-			}
-		});
-
+		carryForwardCellsInto(newWorld);
+		carryForwardShadowsInto(newWorld);
 		return newWorld;
 	};
 
@@ -80,12 +89,15 @@ var World = function () {
 	};
 
 	var dump = function() {
+		console.log("********");
+
 		console.log('Cells');
-		dumpFor(allCells);
+		dumpFor(allCells)();
 
 		console.log('Shadows');
-		dumpFor(allShadows);
+		dumpFor(allShadows)();
 
+		console.log("********");
 		return this;
 	};
 
@@ -98,4 +110,3 @@ var World = function () {
 		dump: dump
 	};
 };
-
