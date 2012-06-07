@@ -23,10 +23,6 @@ var Cell = function (options) {
     return x === testX && y === testY;
   };
 
-  var neighbourCount = function () {
-    return world.neighbourCountAt(x, y);
-  };
-
   return {
     x: getX,
     y: getY,
