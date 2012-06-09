@@ -75,7 +75,7 @@ describe("World", function() {
           var world = World();
           var cell = Cell({x: 4, y: 10}).belongsTo(world);
           var northNeighbour = Cell({x: 4+x, y: 10+y}).belongsTo(world);
-          expect(world.neighbourCountAt(4, 10)).toEqual(1);
+          expect(world.neighbourCountAt({x:4, y:10})).toEqual(1);
         });
       });
     });
@@ -84,7 +84,7 @@ describe("World", function() {
       it("is zero", function() {
         var world = World();
         var cell = Cell({x: 4, y: 10}).belongsTo(world);
-        expect(world.neighbourCountAt(4, 10)).toEqual(0);
+        expect(world.neighbourCountAt({x:4, y:10})).toEqual(0);
       });
     });
 
@@ -100,7 +100,7 @@ describe("World", function() {
         Cell({x: 5, y: 9}).belongsTo(world);
         Cell({x: 5, y: 10}).belongsTo(world);
         Cell({x: 5, y: 11}).belongsTo(world);
-        expect(world.neighbourCountAt(4, 10)).toEqual(8);
+        expect(world.neighbourCountAt({x:4, y:10})).toEqual(8);
       });
     });
   });

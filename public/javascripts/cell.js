@@ -19,8 +19,8 @@ var Cell = function (options) {
             return y;
         },
 
-        isAt = function (testX, testY) {
-            return x === testX && y === testY;
+        isAt = function (coordinates) {
+            return x === coordinates.x && y === coordinates.y;
         };
 
     return {

@@ -20,20 +20,21 @@ var World = function () {
             corners.map(function (corner) {
                 return {x: (cell.x() + corner.x), y: (cell.y() + corner.y)};
             }).filter(function (coordinates) {
-                var x = coordinates.x, y = coordinates.y;
-                return !hasShadowAt(x, y) && !hasCellAt(coordinates);
-            }).forEach(function (coordinates) {
-                shadows.push(Cell(coordinates));
+                return !hasCellAt(coordinates) && !hasShadowAt(coordinates);
+            }).map(function (coordinates) {
+                return Cell(coordinates);
+            }).forEach(function (cell) {
+                shadows.push(cell);
             });
             shadows = shadows.filter(function (shadow) {
-                return !shadow.isAt(cell.x(), cell.y());
+                return !shadow.isAt({x:cell.x(), y:cell.y()});
             });
         },
 
         hasEntityAtFor = function (entities) {
             return function (coordinates) {
                 return entities().some(function (entity) {
-                    return entity.isAt(coordinates.x, coordinates.y);
+                    return entity.isAt(coordinates);
                 });
             };
         },
@@ -42,9 +43,9 @@ var World = function () {
 
         hasShadowAt = hasEntityAtFor(allShadows),
 
-        neighbourCountAt = function (x, y) {
+        neighbourCountAt = function (coordinates) {
             return corners.filter(function (corner) {
-                return hasCellAt({x:(x+corner.x), y:(y+corner.y)});
+                return hasCellAt({x:(coordinates.x+corner.x), y:(coordinates.y+corner.y)});
             }).length;
         },
 
@@ -56,7 +57,7 @@ var World = function () {
                 entities().forEach(function (entity) {
                     var x = entity.x(),
                         y = entity.y(),
-                        neighbourCount = neighbourCountAt(x, y);
+                        neighbourCount = neighbourCountAt({x: x, y: y});
 
                     if (rule(neighbourCount)) {
                         Cell({x: x, y: y}).belongsTo(newWorld);
