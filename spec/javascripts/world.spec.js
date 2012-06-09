@@ -5,7 +5,7 @@ describe("World", function() {
     it("when coordinates match", function() {
       var world = World();
       Cell({x: 10, y: 4}).belongsTo(world);
-      expect(world.hasCellAt(10, 4)).toBeTruthy();
+      expect(world.hasCellAt({x:10, y:4})).toBeTruthy();
     });
   });
 
@@ -13,36 +13,36 @@ describe("World", function() {
     it("flags all its neighbours as shadows", function() {
       var world = World();
       Cell({x: 0, y: 0}).belongsTo(world);
-      var corners = [[-1, -1], [-1, 0], [-1, 1],
-                     [0, -1],           [0, 1],
-                     [1, -1],  [1, 0],  [1, 1]];
-      corners.forEach(function(corner) {
-        expect(world.hasShadowAt(corner[0], corner[1])).toBeTruthy();
+      var corners = [{x:-1, y:-1}, {x:-1, y:0}, {x:-1, y:1},
+                     {x:0,  y:-1},              {x:0, y:1},
+                     {x:1,  y:-1}, {x:1, y:0},  {x:1, y:1}];
+      corners.forEach(function(coordinates) {
+        expect(world.hasShadowAt(coordinates)).toBeTruthy();
       });
     });
 
     it("doesn't flag itself as a shadow", function() {
       var world = World();
       Cell({x: 0, y: 0}).belongsTo(world);
-      expect(world.hasShadowAt(0, 0)).toBeFalsy();
+      expect(world.hasShadowAt({x:0, y:0})).toBeFalsy();
     });
 
     it("removes a shadow when a cell comes into existance", function() {
       var world = World();
       Cell({x: 0, y: 0}).belongsTo(world);
       Cell({x: 0, y: 1}).belongsTo(world);
-      expect(world.hasShadowAt(0, 1)).toBeFalsy();
+      expect(world.hasShadowAt({x:0, y:1})).toBeFalsy();
     });
 
     it("doesn't remove a shadow when a cell comes into existance at a neighbouring place", function() {
       var world = World();
       Cell({x: 0, y: 0}).belongsTo(world);
       Cell({x: 0, y: 1}).belongsTo(world);
-      var corners = [[-1, -1], [-1, 0], [-1, 1],
-                     [0, -1],
-                     [1, -1],  [1, 0],  [1, 1]];
-      corners.forEach(function(corner) {
-        expect(world.hasShadowAt(corner[0], corner[1])).toBeTruthy();
+      var corners = [{x:-1, y:-1}, {x:-1, y:0}, {x:-1, y:1},
+                     {x:0,  y:-1},
+                     {x:1,  y:-1}, {x:1, y:0},  {x:1, y:1}];
+      corners.forEach(function(coordinates) {
+        expect(world.hasShadowAt(coordinates)).toBeTruthy();
       });
     });
   });
@@ -51,13 +51,13 @@ describe("World", function() {
     it("when x-coordinate don't match", function() {
       var world = World();
       Cell({x: 10, y: 4}).belongsTo(world);
-      expect(world.hasCellAt(-10, 4)).toBeFalsy();
+      expect(world.hasCellAt({x:-10, y:4})).toBeFalsy();
     });
 
     it("when y-coordinate don't match", function() {
       var world = World();
       Cell({x: 10, y: 4}).belongsTo(world);
-      expect(world.hasCellAt(10, -4)).toBeFalsy();
+      expect(world.hasCellAt({x:10, y:-4})).toBeFalsy();
     });
   });
 
@@ -113,7 +113,7 @@ describe("World", function() {
         Cell({x: 10, y: 3}).belongsTo(world);
         Cell({x: 9, y: 4}).belongsTo(world);
         var newWorld = world.tick();
-        expect(newWorld.hasCellAt(10, 4)).toBeTruthy();
+        expect(newWorld.hasCellAt({x:10, y:4})).toBeTruthy();
       });
 
       it("with 3 neighbours", function() {
@@ -123,7 +123,7 @@ describe("World", function() {
         Cell({x: 9, y: 4}).belongsTo(world);
         Cell({x: 9, y: 3}).belongsTo(world);
         var newWorld = world.tick();
-        expect(newWorld.hasCellAt(10, 4)).toBeTruthy();
+        expect(newWorld.hasCellAt({x:10, y:4})).toBeTruthy();
       });
     });
 
@@ -133,7 +133,7 @@ describe("World", function() {
         var cellWithOneNeighbours = Cell({x: 10, y: 4}).belongsTo(world);
         Cell({x: 10, y: 3}).belongsTo(world);
         var newWorld = world.tick();
-        expect(newWorld.hasCellAt(10, 4)).toBeFalsy();
+        expect(newWorld.hasCellAt({x:10, y:4})).toBeFalsy();
       });
 
       it("with 4 neighbours", function() {
@@ -144,7 +144,7 @@ describe("World", function() {
         Cell({x: 9, y: 3}).belongsTo(world);
         Cell({x: 11, y: 4}).belongsTo(world);
         var newWorld = world.tick();
-        expect(newWorld.hasCellAt(10, 4)).toBeFalsy();
+        expect(newWorld.hasCellAt({x:10, y:4})).toBeFalsy();
       });
     });
 
@@ -155,7 +155,7 @@ describe("World", function() {
         Cell({x: 1, y: 0}).belongsTo(world);
         Cell({x: -1, y: -1}).belongsTo(world);
         var newWorld = world.tick();
-        expect(newWorld.hasCellAt(0, 0)).toBeTruthy();
+        expect(newWorld.hasCellAt({x:0, y:0})).toBeTruthy();
       });
     })
 
@@ -165,7 +165,7 @@ describe("World", function() {
         Cell({x: 1, y: 1}).belongsTo(world);
         Cell({x: 1, y: 0}).belongsTo(world);
         var newWorld = world.tick();
-        expect(newWorld.hasCellAt(0, 0)).toBeFalsy();
+        expect(newWorld.hasCellAt({x:0, y:0})).toBeFalsy();
       });
     })
 
@@ -177,9 +177,8 @@ describe("World", function() {
         Cell({x: -1, y: 1}).belongsTo(world);
         Cell({x: -1, y: 0}).belongsTo(world);
         var newWorld = world.tick();
-        expect(newWorld.hasCellAt(0, 0)).toBeFalsy();
+        expect(newWorld.hasCellAt({x:0, y:0})).toBeFalsy();
       });
     })
   });
 });
-

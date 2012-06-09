@@ -19,11 +19,11 @@ var World = function () {
             cells.push(cell);
             corners.map(function (corner) {
                 return {x: (cell.x() + corner.x), y: (cell.y() + corner.y)};
-            }).filter(function (corrdinates) {
-                var x = corrdinates.x, y = corrdinates.y;
-                return !hasShadowAt(x, y) && !hasCellAt(x, y);
-            }).forEach(function (corrdinates) {
-                shadows.push(Cell(corrdinates));
+            }).filter(function (coordinates) {
+                var x = coordinates.x, y = coordinates.y;
+                return !hasShadowAt(x, y) && !hasCellAt(coordinates);
+            }).forEach(function (coordinates) {
+                shadows.push(Cell(coordinates));
             });
             shadows = shadows.filter(function (shadow) {
                 return !shadow.isAt(cell.x(), cell.y());
@@ -31,9 +31,9 @@ var World = function () {
         },
 
         hasEntityAtFor = function (entities) {
-            return function (x, y) {
+            return function (coordinates) {
                 return entities().some(function (entity) {
-                    return entity.isAt(x, y);
+                    return entity.isAt(coordinates.x, coordinates.y);
                 });
             };
         },
@@ -43,9 +43,9 @@ var World = function () {
         hasShadowAt = hasEntityAtFor(allShadows),
 
         neighbourCountAt = function (x, y) {
-            return corners.reduce(function (sum, corner) {
-                return sum + (hasCellAt(x + corner.x, y + corner.y) ? 1 : 0);
-            }, 0);
+            return corners.filter(function (corner) {
+                return hasCellAt({x:(x+corner.x), y:(y+corner.y)});
+            }).length;
         },
 
         carryForwardFor = function (options) {
