@@ -11,18 +11,17 @@ var Cell = function (options) {
             return this;
         },
 
-        getX = function () {
-            return x;
-        },
-
-        getY = function () {
-            return y;
-        },
-
         coordinates = function() {
             return {
                 x: x,
                 y: y
+            };
+        },
+
+        coordinatesDisplacedTo = function (displacement) {
+            return {
+                x: x + displacement.x,
+                y: y + displacement.y
             };
         },
 
@@ -35,9 +34,8 @@ var Cell = function (options) {
         };
 
     return {
-        x: getX,
-        y: getY,
         coordinates: coordinates,
+        coordinatesDisplacedTo: coordinatesDisplacedTo,
         belongsTo: belongsTo,
         isAt: isAt,
         dump: dump

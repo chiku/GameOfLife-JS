@@ -18,7 +18,7 @@ var World = function () {
         addCell = function (cell) {
             cells.push(cell);
             corners.map(function (corner) {
-                return {x: (cell.x() + corner.x), y: (cell.y() + corner.y)};
+                return cell.coordinatesDisplacedTo(corner);
             }).filter(function (coordinates) {
                 return !hasCellAt(coordinates) && !hasShadowAt(coordinates);
             }).map(function (coordinates) {
