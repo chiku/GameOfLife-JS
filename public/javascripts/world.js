@@ -1,112 +1,114 @@
 var World = function () {
-	"use strict";
+    "use strict";
 
-	var cells = [],
-		shadows = [],
-		corners = [[-1,-1], [-1,0], [-1,1], [0,-1], [0,1], [1,-1], [1,0], [1,1]],
-		rules = Rules();
+    var cells = [],
+        shadows = [],
+        corners = [{x:-1,y:-1}, {x:-1,y:0}, {x:-1,y:1}, {x:0,y:-1},
+                   {x:0,y:1}, {x:1,y:-1}, {x:1,y:0}, {x:1,y:1}],
+        rules = Rules(),
 
-	var allCells = function() {
-		return cells;
-	};
+        allCells = function() {
+            return cells;
+        },
 
-	var allShadows = function() {
-		return shadows;
-	};
+        allShadows = function() {
+            return shadows;
+        },
 
-	var addCell = function (cell) {
-		cells.push(cell);
-		corners.forEach(function (corner) {
-			var x = cell.x() + corner[0],
-				y = cell.y() + corner[1];
-			if (!hasShadowAt(x, y) && !hasCellAt(x, y)) {
-				shadows.push(Cell({x: x, y: y}));
-			}
-		});
-		shadows = shadows.filter(function (shadow) {
-			return !shadow.isAt(cell.x(), cell.y());
-		});
-	};
+        addCell = function (cell) {
+            cells.push(cell);
+            corners.map(function (corner) {
+                return {x: (cell.x() + corner.x), y: (cell.y() + corner.y)};
+            }).filter(function (corrdinates) {
+                var x = corrdinates.x, y = corrdinates.y;
+                return !hasShadowAt(x, y) && !hasCellAt(x, y);
+            }).forEach(function (corrdinates) {
+                shadows.push(Cell(corrdinates));
+            });
+            shadows = shadows.filter(function (shadow) {
+                return !shadow.isAt(cell.x(), cell.y());
+            });
+        },
 
-	var hasEntityAtFor = function (entities) {
-		return function (x, y) {
-			return entities().some(function (entity) {
-				return entity.isAt(x, y);
-			});
-		};
-	};
+        hasEntityAtFor = function (entities) {
+            return function (x, y) {
+                return entities().some(function (entity) {
+                    return entity.isAt(x, y);
+                });
+            };
+        },
 
-	var hasCellAt = hasEntityAtFor(allCells);
+        hasCellAt = hasEntityAtFor(allCells),
 
-	var hasShadowAt = hasEntityAtFor(allShadows);
+        hasShadowAt = hasEntityAtFor(allShadows),
 
-	var neighbourCountAt = function (x, y) {
-		return corners.reduce(function (sum, corner) {
-			return sum + (hasCellAt(x + corner[0], y + corner[1]) ? 1 : 0);
-		}, 0);
-	};
+        neighbourCountAt = function (x, y) {
+            return corners.reduce(function (sum, corner) {
+                return sum + (hasCellAt(x + corner.x, y + corner.y) ? 1 : 0);
+            }, 0);
+        },
 
-	var carryForwardFor = function (options) {
-		var entities = options.entities,
-			rule = options.rule;
+        carryForwardFor = function (options) {
+            var entities = options.entities,
+                rule = options.rule;
 
-		return function (newWorld) {
-			entities().forEach(function (entity) {
-				var x = entity.x(),
-					y = entity.y(),
-					neighbourCount = neighbourCountAt(x, y);
+            return function (newWorld) {
+                entities().forEach(function (entity) {
+                    var x = entity.x(),
+                        y = entity.y(),
+                        neighbourCount = neighbourCountAt(x, y);
 
-				if (rule(neighbourCount)) {
-					Cell({x: x, y: y}).belongsTo(newWorld);
-				}
-			});
-		};
-	}
+                    if (rule(neighbourCount)) {
+                        Cell({x: x, y: y}).belongsTo(newWorld);
+                    }
+                });
+            };
+        },
 
-	var carryForwardCellsInto = carryForwardFor({
-		entities: allCells,
-		rule: rules.carryLiveCellForward
-	});
+        carryForwardCellsInto = carryForwardFor({
+            entities: allCells,
+            rule: rules.carryLiveCellForward
+        }),
 
-	var carryForwardShadowsInto = carryForwardFor({
-		entities: allShadows,
-		rule: rules.carryDeadCellForward
-	});
+        carryForwardShadowsInto = carryForwardFor({
+            entities: allShadows,
+            rule: rules.carryDeadCellForward
+        }),
 
-	var tick = function () {
-		var newWorld = World();
-		carryForwardCellsInto(newWorld);
-		carryForwardShadowsInto(newWorld);
-		return newWorld;
-	};
+        tick = function () {
+            var newWorld = World();
+            carryForwardCellsInto(newWorld);
+            carryForwardShadowsInto(newWorld);
+            return newWorld;
+        },
 
-	var dumpFor = function(entities) {
-		return function() {
-			entities().forEach(function (entity) {
-				console.log('(' + entity.x() + ', ' + entity.y() + ')');
-			});
-		};
-	};
+        dumpFor = function(entities) {
+            return function() {
+                entities().forEach(function (entity) {
+                    console.log('(' + entity.x() + ', ' + entity.y() + ')');
+                });
+            };
+        },
 
-	var dump = function() {
-		console.log("********");
+        dump = function() {
+            console.log("********");
 
-		console.log('Cells');
-		dumpFor(allCells)();
+            console.log('Cells');
+            dumpFor(allCells)();
 
-		console.log('Shadows');
-		dumpFor(allShadows)();
+            console.log('Shadows');
+            dumpFor(allShadows)();
 
-		console.log("********");
-		return this;
-	};
+            console.log("********");
+            return this;
+        };
 
-	return {
-		addCell: addCell,
-		hasCellAt: hasCellAt,
-		hasShadowAt: hasShadowAt,
-		neighbourCountAt: neighbourCountAt,
-		tick: tick,
-		dump: dump
-	};
+    return {
+        addCell: addCell,
+        hasCellAt: hasCellAt,
+        hasShadowAt: hasShadowAt,
+        neighbourCountAt: neighbourCountAt,
+        tick: tick,
+        dump: dump
+    };
 };
