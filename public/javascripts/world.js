@@ -54,14 +54,10 @@ var World = function () {
                 rule = options.rule;
 
             return function (newWorld) {
-                entities().forEach(function (entity) {
-                    var x = entity.x(),
-                        y = entity.y(),
-                        neighbourCount = neighbourCountAt({x: x, y: y});
-
-                    if (rule(neighbourCount)) {
-                        Cell({x: x, y: y}).belongsTo(newWorld);
-                    }
+                entities().filter(function (entity) {
+                    return rule(neighbourCountAt(entity.coordinates()));
+                }).forEach(function (entity) {
+                    Cell(entity.coordinates()).belongsTo(newWorld);
                 });
             };
         },
