@@ -35,7 +35,7 @@ var World = function () {
 
         removeOldShadowAt = function (cell) {
             shadows = shadows.filter(function (shadow) {
-                return !shadow.isAt(cell.coordinates());
+                return !shadow.isAt(cell.coordinates);
             });
         },
 
@@ -65,7 +65,7 @@ var World = function () {
                 entities().filter(function (entity) {
                     return rule(neighbourCountFor(entity));
                 }).forEach(function (entity) {
-                    Cell(entity.coordinates()).belongsTo(newWorld);
+                    Cell(entity.coordinates).belongsTo(newWorld);
                 });
             };
         },

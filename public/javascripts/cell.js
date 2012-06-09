@@ -5,17 +5,15 @@ var Cell = function (options) {
         y = options.y,
         world,
 
+        coordinates = {
+            x: x,
+            y: y
+        },
+
         belongsTo = function (newWorld) {
             world = newWorld;
             world.addCell(this);
             return this;
-        },
-
-        coordinates = function() {
-            return {
-                x: x,
-                y: y
-            };
         },
 
         coordinatesDisplacedTo = function (displacement) {
