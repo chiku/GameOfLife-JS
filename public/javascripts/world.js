@@ -19,6 +19,7 @@ var World = function () {
             cells.push(cell);
             castShadowsAround(cell);
             removeOldShadowAt(cell);
+            return this;
         },
 
         castShadowsAround = function (cell) {
@@ -65,7 +66,7 @@ var World = function () {
                 entities().filter(function (entity) {
                     return rule(neighbourCountFor(entity));
                 }).forEach(function (entity) {
-                    Cell(entity.coordinates).belongsTo(newWorld);
+                    newWorld.addCell(Cell(entity.coordinates));
                 });
             };
         },

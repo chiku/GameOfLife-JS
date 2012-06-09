@@ -4,7 +4,7 @@ describe("World", function() {
   describe("knows that it contains a cell", function() {
     it("when coordinates match", function() {
       var world = World();
-      Cell({x: 10, y: 4}).belongsTo(world);
+      world.addCell(Cell({x: 10, y: 4}))
       expect(world.hasCellAt({x:10, y:4})).toBeTruthy();
     });
   });
@@ -12,7 +12,7 @@ describe("World", function() {
   describe("when a new cell is created", function() {
     it("flags all its neighbours as shadows", function() {
       var world = World();
-      Cell({x: 0, y: 0}).belongsTo(world);
+      world.addCell(Cell({x: 0, y: 0}));
       var corners = [{x:-1, y:-1}, {x:-1, y:0}, {x:-1, y:1},
                      {x:0,  y:-1},              {x:0, y:1},
                      {x:1,  y:-1}, {x:1, y:0},  {x:1, y:1}];
@@ -23,21 +23,21 @@ describe("World", function() {
 
     it("doesn't flag itself as a shadow", function() {
       var world = World();
-      Cell({x: 0, y: 0}).belongsTo(world);
+      world.addCell(Cell({x: 0, y: 0}));
       expect(world.hasShadowAt({x:0, y:0})).toBeFalsy();
     });
 
     it("removes a shadow when a cell comes into existance", function() {
       var world = World();
-      Cell({x: 0, y: 0}).belongsTo(world);
-      Cell({x: 0, y: 1}).belongsTo(world);
+      world.addCell(Cell({x: 0, y: 0}))
+           .addCell(Cell({x: 0, y: 1}));
       expect(world.hasShadowAt({x:0, y:1})).toBeFalsy();
     });
 
     it("doesn't remove a shadow when a cell comes into existance at a neighbouring place", function() {
       var world = World();
-      Cell({x: 0, y: 0}).belongsTo(world);
-      Cell({x: 0, y: 1}).belongsTo(world);
+      world.addCell(Cell({x: 0, y: 0}))
+           .addCell(Cell({x: 0, y: 1}));
       var corners = [{x:-1, y:-1}, {x:-1, y:0}, {x:-1, y:1},
                      {x:0,  y:-1},
                      {x:1,  y:-1}, {x:1, y:0},  {x:1, y:1}];
@@ -50,13 +50,13 @@ describe("World", function() {
   describe("knows that it doesn't contain a cell", function() {
     it("when x-coordinate don't match", function() {
       var world = World();
-      Cell({x: 10, y: 4}).belongsTo(world);
+      world.addCell(Cell({x: 10, y: 4}));
       expect(world.hasCellAt({x:-10, y:4})).toBeFalsy();
     });
 
     it("when y-coordinate don't match", function() {
       var world = World();
-      Cell({x: 10, y: 4}).belongsTo(world);
+      world.addCell(Cell({x: 10, y: 4}));
       expect(world.hasCellAt({x:10, y:-4})).toBeFalsy();
     });
   });
@@ -73,8 +73,9 @@ describe("World", function() {
 
         it(direction, function() {
           var world = World();
-          var cell = Cell({x: 4, y: 10}).belongsTo(world);
-          var northNeighbour = Cell({x: 4+x, y: 10+y}).belongsTo(world);
+          var cell = Cell({x: 4, y: 10});
+          var neighbour = Cell({x: 4+x, y: 10+y});
+          world.addCell(cell).addCell(neighbour);
           expect(world.neighbourCountFor(cell)).toEqual(1);
         });
       });
@@ -83,7 +84,8 @@ describe("World", function() {
     describe("when none are present", function() {
       it("is zero", function() {
         var world = World();
-        var cell = Cell({x: 4, y: 10}).belongsTo(world);
+        var cell = Cell({x: 4, y: 10})
+        world.addCell(cell);
         expect(world.neighbourCountFor(cell)).toEqual(0);
       });
     });
@@ -91,15 +93,16 @@ describe("World", function() {
     describe("when all neighbours are present", function() {
       it("is eight", function() {
         var world = World();
-        var cell = Cell({x: 4, y: 10}).belongsTo(world);
-        Cell({x: 3, y: 9}).belongsTo(world);
-        Cell({x: 3, y: 10}).belongsTo(world);
-        Cell({x: 3, y: 11}).belongsTo(world);
-        Cell({x: 4, y: 9}).belongsTo(world);
-        Cell({x: 4, y: 11}).belongsTo(world);
-        Cell({x: 5, y: 9}).belongsTo(world);
-        Cell({x: 5, y: 10}).belongsTo(world);
-        Cell({x: 5, y: 11}).belongsTo(world);
+        var cell = Cell({x: 4, y: 10});
+        world.addCell(cell)
+             .addCell(Cell({x: 3, y: 9}))
+             .addCell(Cell({x: 3, y: 10}))
+             .addCell(Cell({x: 3, y: 11}))
+             .addCell(Cell({x: 4, y: 9}))
+             .addCell(Cell({x: 4, y: 11}))
+             .addCell(Cell({x: 5, y: 9}))
+             .addCell(Cell({x: 5, y: 10}))
+             .addCell(Cell({x: 5, y: 11}));
         expect(world.neighbourCountFor(cell)).toEqual(8);
       });
     });
@@ -109,19 +112,21 @@ describe("World", function() {
     describe("carries forward to next genaration a cell", function() {
       it("with 2 neighbours", function() {
         var world = World();
-        var cellWithTwoNeighbours = Cell({x: 10, y: 4}).belongsTo(world);
-        Cell({x: 10, y: 3}).belongsTo(world);
-        Cell({x: 9, y: 4}).belongsTo(world);
+        var cellWithTwoNeighbours = Cell({x: 10, y: 4});
+        world.addCell(cellWithTwoNeighbours)
+             .addCell(Cell({x: 10, y: 3}))
+             .addCell(Cell({x: 9, y: 4}));
         var newWorld = world.tick();
         expect(newWorld.hasCellAt({x:10, y:4})).toBeTruthy();
       });
 
       it("with 3 neighbours", function() {
         var world = World();
-        var cellWithThreeNeighbours = Cell({x: 10, y: 4}).belongsTo(world);
-        Cell({x: 10, y: 3}).belongsTo(world);
-        Cell({x: 9, y: 4}).belongsTo(world);
-        Cell({x: 9, y: 3}).belongsTo(world);
+        var cellWithThreeNeighbours = Cell({x: 10, y: 4});
+        world.addCell(cellWithThreeNeighbours)
+             .addCell(Cell({x: 10, y: 3}))
+             .addCell(Cell({x: 9, y: 4}))
+             .addCell(Cell({x: 9, y: 3}));
         var newWorld = world.tick();
         expect(newWorld.hasCellAt({x:10, y:4})).toBeTruthy();
       });
@@ -130,19 +135,21 @@ describe("World", function() {
     describe("doesn't carries forward to next genaration a cell", function() {
       it("with 1 neighbour", function() {
         var world = World();
-        var cellWithOneNeighbours = Cell({x: 10, y: 4}).belongsTo(world);
-        Cell({x: 10, y: 3}).belongsTo(world);
+        var cellWithOneNeighbours = Cell({x: 10, y: 4});
+        world.addCell(cellWithOneNeighbours)
+             .addCell(Cell({x: 10, y: 3}));
         var newWorld = world.tick();
         expect(newWorld.hasCellAt({x:10, y:4})).toBeFalsy();
       });
 
       it("with 4 neighbours", function() {
         var world = World();
-        var cellWithThreeNeighbours = Cell({x: 10, y: 4}).belongsTo(world);
-        Cell({x: 10, y: 3}).belongsTo(world);
-        Cell({x: 9, y: 4}).belongsTo(world);
-        Cell({x: 9, y: 3}).belongsTo(world);
-        Cell({x: 11, y: 4}).belongsTo(world);
+        var cellWithThreeNeighbours = Cell({x: 10, y: 4});
+        world.addCell(cellWithThreeNeighbours)
+             .addCell(Cell({x: 10, y: 3}))
+             .addCell(Cell({x: 9, y: 4}))
+             .addCell(Cell({x: 9, y: 3}))
+             .addCell(Cell({x: 11, y: 4}));
         var newWorld = world.tick();
         expect(newWorld.hasCellAt({x:10, y:4})).toBeFalsy();
       });
@@ -151,9 +158,9 @@ describe("World", function() {
     describe("has dead cell come to life", function() {
       it("when number of neighbours is 3", function() {
         var world = World();
-        Cell({x: 1, y: 1}).belongsTo(world);
-        Cell({x: 1, y: 0}).belongsTo(world);
-        Cell({x: -1, y: -1}).belongsTo(world);
+        world.addCell(Cell({x: 1, y: 1}))
+             .addCell(Cell({x: 1, y: 0}))
+             .addCell(Cell({x: -1, y: -1}));
         var newWorld = world.tick();
         expect(newWorld.hasCellAt({x:0, y:0})).toBeTruthy();
       });
@@ -162,8 +169,8 @@ describe("World", function() {
     describe("doesn't have dead cell come to life", function() {
       it("when number of neighbours is 2", function() {
         var world = World();
-        Cell({x: 1, y: 1}).belongsTo(world);
-        Cell({x: 1, y: 0}).belongsTo(world);
+        world.addCell(Cell({x: 1, y: 1}))
+             .addCell(Cell({x: 1, y: 0}));
         var newWorld = world.tick();
         expect(newWorld.hasCellAt({x:0, y:0})).toBeFalsy();
       });
@@ -172,10 +179,10 @@ describe("World", function() {
     describe("doesn't have dead cell come to life", function() {
       it("when number of neighbours is 4", function() {
         var world = World();
-        Cell({x: 1, y: 1}).belongsTo(world);
-        Cell({x: 1, y: 0}).belongsTo(world);
-        Cell({x: -1, y: 1}).belongsTo(world);
-        Cell({x: -1, y: 0}).belongsTo(world);
+        world.addCell(Cell({x: 1, y: 1}))
+             .addCell(Cell({x: 1, y: 0}))
+             .addCell(Cell({x: -1, y: 1}))
+             .addCell(Cell({x: -1, y: 0}));
         var newWorld = world.tick();
         expect(newWorld.hasCellAt({x:0, y:0})).toBeFalsy();
       });

@@ -3,17 +3,10 @@ var Cell = function (options) {
 
     var x = options.x,
         y = options.y,
-        world,
 
         coordinates = {
             x: x,
             y: y
-        },
-
-        belongsTo = function (newWorld) {
-            world = newWorld;
-            world.addCell(this);
-            return this;
         },
 
         coordinatesDisplacedTo = function (displacement) {
@@ -34,7 +27,6 @@ var Cell = function (options) {
     return {
         coordinates: coordinates,
         coordinatesDisplacedTo: coordinatesDisplacedTo,
-        belongsTo: belongsTo,
         isAt: isAt,
         dump: dump
     };
