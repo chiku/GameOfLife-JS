@@ -27,7 +27,7 @@ var World = function () {
                 shadows.push(cell);
             });
             shadows = shadows.filter(function (shadow) {
-                return !shadow.isAt({x:cell.x(), y:cell.y()});
+                return !shadow.isAt(cell.coordinates());
             });
         },
 
@@ -45,7 +45,7 @@ var World = function () {
 
         neighbourCountAt = function (coordinates) {
             return corners.filter(function (corner) {
-                return hasCellAt({x:(coordinates.x+corner.x), y:(coordinates.y+corner.y)});
+                return hasCellAt({x:(coordinates.x + corner.x), y:(coordinates.y + corner.y)});
             }).length;
         },
 
@@ -82,19 +82,23 @@ var World = function () {
         dumpFor = function(entities) {
             return function() {
                 entities().forEach(function (entity) {
-                    console.log('(' + entity.x() + ', ' + entity.y() + ')');
+                    entity.dump();
                 });
             };
         },
+
+        dumpForCells = dumpFor(allCells),
+
+        dumpForShadows = dumpFor(allShadows),
 
         dump = function() {
             console.log("********");
 
             console.log('Cells');
-            dumpFor(allCells)();
+            dumpForCells();
 
             console.log('Shadows');
-            dumpFor(allShadows)();
+            dumpForShadows();
 
             console.log("********");
             return this;

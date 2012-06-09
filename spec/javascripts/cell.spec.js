@@ -3,10 +3,12 @@ describe("Cell", function() {
 
   it("knows its x-coordinates", function() {
     expect(Cell({x: 2, y: 10}).x()).toEqual(2);
+    expect(Cell({x: 2, y: 10}).coordinates().x).toEqual(2);
   });
 
   it("knows its y-coordinates", function() {
     expect(Cell({x: 2, y: 10}).y()).toEqual(10);
+    expect(Cell({x: 2, y: 10}).coordinates().y).toEqual(10);
   });
 
   describe("is at a location", function() {
