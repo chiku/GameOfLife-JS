@@ -118,6 +118,7 @@ var World = function () {
         hasCellAt: hasCellAt,
         hasShadowAt: hasShadowAt,
         neighbourCountFor: neighbourCountFor,
+        cells: allCells,
         tick: tick,
         dump: dump
     };
