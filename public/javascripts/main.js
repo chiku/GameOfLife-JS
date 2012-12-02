@@ -1,4 +1,6 @@
 (function () {
+    "use strict";
+
     var MarkCell = function (options) {
         var height = options.height,
             width = options.width,
@@ -38,7 +40,7 @@
             markCell,
 
             initialize = function (options) {
-                var canvas = document.getElementById(selectors.world)
+                var canvas = document.getElementById(selectors.world),
                     context = canvas.getContext('2d');
 
                 markCell = new MarkCell({
