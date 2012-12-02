@@ -1,8 +1,8 @@
 describe("World", function() {
   "use strict";
 
-  describe("knows that it contains a cell", function() {
-    it("when coordinates match", function() {
+  describe("when coordinates match", function() {
+    it("knows that it contains a cell", function() {
       var world = World();
       world.addCell(Cell({x: 10, y: 4}))
       expect(world.hasCellAt({x:10, y:4})).toBeTruthy();
@@ -47,31 +47,32 @@ describe("World", function() {
     });
   });
 
-  describe("knows that it doesn't contain a cell", function() {
-    it("when x-coordinate don't match", function() {
+  describe("when x-coordinate don't match", function() {
+   it("knows that it doesn't contain a cell", function() {
       var world = World();
       world.addCell(Cell({x: 10, y: 4}));
       expect(world.hasCellAt({x:-10, y:4})).toBeFalsy();
     });
+  });
 
-    it("when y-coordinate don't match", function() {
+  describe("when x-coordinate don't match", function() {
+    it("knows that it doesn't contain a cell", function() {
       var world = World();
       world.addCell(Cell({x: 10, y: 4}));
       expect(world.hasCellAt({x:10, y:-4})).toBeFalsy();
     });
   });
 
-  describe("knows neighbour count for alive cells", function() {
-    describe("when a cell is present at", function() {
-      [ ["south-west", -1, -1], ["west", -1, +0],  ["north-west", -1, +1],
-        ["south",      +0, -1],                    ["east",       +0, +1],
-        ["south-west", +1, -1], ["south", +1, +0], ["south-east", +1, +1]
-      ].forEach(function (options) {
-        var direction = options[0],
-            x = options[1],
-            y = options[2];
-
-        it(direction, function() {
+  describe("neighbour count for alive cells", function() {
+    [ ["south-west", -1, -1], ["west", -1, +0],  ["north-west", -1, +1],
+      ["south",      +0, -1],                    ["east",       +0, +1],
+      ["south-west", +1, -1], ["south", +1, +0], ["south-east", +1, +1]
+    ].forEach(function (options) {
+      var direction = options[0],
+          x = options[1],
+          y = options[2];
+      describe("when a cell is present at " + direction, function() {
+        it("is one", function() {
           var world = World();
           var cell = Cell({x: 4, y: 10});
           var neighbour = Cell({x: 4+x, y: 10+y});
@@ -132,8 +133,8 @@ describe("World", function() {
       });
     });
 
-    describe("doesn't carries forward to next genaration a cell", function() {
-      it("with 1 neighbour", function() {
+    describe("when number of neighbours is 1", function() {
+      it("doesn't carries forward to next genaration a cell", function() {
         var world = World();
         var cellWithOneNeighbours = Cell({x: 10, y: 4});
         world.addCell(cellWithOneNeighbours)
@@ -141,8 +142,10 @@ describe("World", function() {
         var newWorld = world.tick();
         expect(newWorld.hasCellAt({x:10, y:4})).toBeFalsy();
       });
+    });
 
-      it("with 4 neighbours", function() {
+    describe("when number of neighbours is 4", function() {
+      it("doesn't carries forward to next genaration a cell", function() {
         var world = World();
         var cellWithThreeNeighbours = Cell({x: 10, y: 4});
         world.addCell(cellWithThreeNeighbours)
@@ -155,8 +158,8 @@ describe("World", function() {
       });
     });
 
-    describe("has dead cell come to life", function() {
-      it("when number of neighbours is 3", function() {
+    describe("when number of neighbours is 3", function() {
+      it("has dead cell come to life", function() {
         var world = World();
         world.addCell(Cell({x: 1, y: 1}))
              .addCell(Cell({x: 1, y: 0}))
@@ -166,8 +169,8 @@ describe("World", function() {
       });
     })
 
-    describe("doesn't have dead cell come to life", function() {
-      it("when number of neighbours is 2", function() {
+    describe("when number of neighbours is 2", function() {
+      it("doesn't have dead cell come to life", function() {
         var world = World();
         world.addCell(Cell({x: 1, y: 1}))
              .addCell(Cell({x: 1, y: 0}));
@@ -176,8 +179,8 @@ describe("World", function() {
       });
     })
 
-    describe("doesn't have dead cell come to life", function() {
-      it("when number of neighbours is 4", function() {
+    describe("when number of neighbours is 4", function() {
+      it("doesn't have dead cell come to life", function() {
         var world = World();
         world.addCell(Cell({x: 1, y: 1}))
              .addCell(Cell({x: 1, y: 0}))

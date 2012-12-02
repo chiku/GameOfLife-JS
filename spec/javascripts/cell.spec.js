@@ -17,20 +17,22 @@ describe("Cell", function() {
     expect(Cell({x: 2, y: 10}).coordinatesDisplacedTo({x: 5, y: 8}).y).toEqual(18);
   });
 
-  describe("is at a location", function() {
-    it("when coordinates match", function() {
+  describe("when coordinates match", function() {
+    it("is at a location", function() {
       var cell = Cell({x: 10, y: 4});
       expect(cell.isAt({x: 10, y: 4})).toBeTruthy();
     });
   });
 
-  describe("is not at the location", function() {
-    it("when x-coordinates don't match", function() {
+  describe("when x-coordinates don't match", function() {
+    it("is not at the location", function() {
       var cell = Cell({x: 10, y: 4});
       expect(cell.isAt({x: -10, y: 4})).toBeFalsy();
     });
+  });
 
-    it("when y-coordinates don't match", function() {
+  describe("when y-coordinates don't match", function() {
+    it("is not at the location", function() {
       var cell = Cell({x: 10, y: 4});
       expect(cell.isAt({x: 10, y: -4})).toBeFalsy();
     });
