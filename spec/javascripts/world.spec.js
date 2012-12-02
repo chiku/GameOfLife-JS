@@ -167,7 +167,7 @@ describe("World", function() {
         var newWorld = world.tick();
         expect(newWorld.hasCellAt({x:0, y:0})).toBeTruthy();
       });
-    })
+    });
 
     describe("when number of neighbours is 2", function() {
       it("doesn't have dead cell come to life", function() {
@@ -177,7 +177,7 @@ describe("World", function() {
         var newWorld = world.tick();
         expect(newWorld.hasCellAt({x:0, y:0})).toBeFalsy();
       });
-    })
+    });
 
     describe("when number of neighbours is 4", function() {
       it("doesn't have dead cell come to life", function() {
@@ -189,6 +189,6 @@ describe("World", function() {
         var newWorld = world.tick();
         expect(newWorld.hasCellAt({x:0, y:0})).toBeFalsy();
       });
-    })
+    });
   });
 });
