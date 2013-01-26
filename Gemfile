@@ -1,7 +1,10 @@
-source :gemcutter
+source :rubygems
 
-gem 'sinatra'
-gem 'rake'
+gem 'rack'
+
+group :development, :test do
+  gem 'rake'
+end
 
 group :test do
   gem 'jasmine', "1.3.0"
