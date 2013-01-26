@@ -8,7 +8,11 @@
             Cell = Life.Cell,
 
             load = function () {
-                var world = World()
+                var canvas = document.getElementById('world'),
+                    context = canvas.getContext('2d'),
+                    TIME_INTERVAL = 100,
+
+                    world = World()
                             .addCell(Cell({x: 0, y: 0}))
                             .addCell(Cell({x: 1, y: -1}))
                             .addCell(Cell({x: 2, y: -1}))
@@ -17,10 +21,6 @@
                             .addCell(Cell({x: -2, y: -1}))
                             .addCell(Cell({x: -2, y: 1})),
 
-                    TIME_INTERVAL = 100,
-                    canvas = document.getElementById('world'),
-                    context = canvas.getContext('2d'),
-
                     markCell = new MarkCell({
                         context: context,
                         width: 800,
@@ -28,18 +28,12 @@
                         cellSize: 4
                     }),
 
-                    options = {
+                    game = Game({
                         window: window,
-                        context: context,
-                        height: 1280,
-                        width: 800,
-                        cellSize: 4,
+                        markCell: markCell,
                         world: world
-                    },
+                    });
 
-                    game = Game(options);
-
-                game.initialize();
                 setInterval(game.render, TIME_INTERVAL);
             };
 

@@ -4,22 +4,9 @@
 
         var MarkCell = Life.MarkCell,
             window = options.window,
-            width = options.width,
-            height = options.height,
-            cellSize = options.cellSize,
+            markCell = options.markCell,
             currentWorld = options.world,
             previousWorld = options.world,
-            context = options.context,
-            markCell,
-
-            initialize = function (options) {
-                markCell = new MarkCell({
-                    context: context,
-                    width: width,
-                    height: height,
-                    cellSize: cellSize
-                });
-            },
 
             tick = function () {
                 previousWorld = currentWorld;
@@ -37,7 +24,6 @@
             };
 
         return {
-            initialize: initialize,
             render: render
         };
     };
