@@ -23,8 +23,8 @@
 
                     markCell = new MarkCell({
                         context: context,
-                        width: 800,
-                        height: 1280,
+                        width: canvas.width,
+                        height: canvas.height,
                         cellSize: 4
                     }),
 
