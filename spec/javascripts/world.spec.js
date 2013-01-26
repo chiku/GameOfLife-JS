@@ -50,7 +50,7 @@ describe("World", function() {
     });
   });
 
-  describe("when x-coordinate don't match", function() {
+  describe("when x-coordinates don't match", function() {
    it("knows that it doesn't contain a cell", function() {
       var world = World();
       world.addCell(Cell({x: 10, y: 4}));
@@ -58,7 +58,7 @@ describe("World", function() {
     });
   });
 
-  describe("when x-coordinate don't match", function() {
+  describe("when y-coordinates don't match", function() {
     it("knows that it doesn't contain a cell", function() {
       var world = World();
       world.addCell(Cell({x: 10, y: 4}));
