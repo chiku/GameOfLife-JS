@@ -1,9 +1,8 @@
-(function () {
+(function (window, document) {
     var Game = function (options) {
         "use strict";
 
         var MarkCell = Life.MarkCell,
-            window = options.window,
             markCell = options.markCell,
             currentWorld = options.world,
             previousWorld = options.world,
@@ -30,4 +29,4 @@
 
     window.Life = window.Life || {};
     window.Life.Game = Game;
-} ());
+}(window, document, undefined));

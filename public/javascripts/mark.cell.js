@@ -1,4 +1,4 @@
-(function () {
+(function (window, document) {
     var MarkCell = function (options) {
         "use strict";
 
@@ -30,4 +30,4 @@
 
     window.Life = window.Life || {};
     window.Life.MarkCell = MarkCell;
-} ());
+}(window, document, undefined));

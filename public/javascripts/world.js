@@ -1,4 +1,4 @@
-(function () {
+(function (window, document) {
     var World = function () {
         "use strict";
 
@@ -129,4 +129,4 @@
     
     window.Life = window.Life || {};
     window.Life.World = World;
-} ());
+}(window, document, undefined));
