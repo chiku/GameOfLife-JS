@@ -4,8 +4,8 @@ var MarkCell = function (options) {
     var height = options.height,
         width = options.width,
         context = options.context,
+        size = options.cellSize,
 
-        SIZE = 4,
         ALIVE_COLOUR = "#cc3366",
         DEAD_COLOUR = "#acc8ac",
 
@@ -13,11 +13,11 @@ var MarkCell = function (options) {
             return function (coordinates) {
                 var x = coordinates.x,
                     y = coordinates.y,
-                    x1 = x * SIZE + width / 2 + SIZE / 2,
-                    y1 = y * SIZE + height / 2 + SIZE / 2;
+                    x1 = x * size + width / 2 + size / 2,
+                    y1 = y * size + height / 2 + size / 2;
 
                 context.fillStyle = colour;
-                context.fillRect(x1, y1, SIZE - 1, SIZE - 1);
+                context.fillRect(x1, y1, size - 1, size - 1);
             };
         };
 

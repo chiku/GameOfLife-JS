@@ -1,24 +1,21 @@
-var Game = function (window, document, options) {
+var Game = function (options) {
     "use strict";
 
-    var WIDTH = 1280,
-        HEIGHT = 800,
-        TIME_INTERVAL = 100,
-        window = window,
-        document = document,
+    var window = options.window,
+        width = options.width,
+        height = options.height,
+        cellSize = options.cellSize,
         currentWorld = options.world,
         previousWorld = options.world,
-        selectors = options.selectors,
+        canvas = options.canvas,
         markCell,
 
         initialize = function (options) {
-            var canvas = document.getElementById(selectors.world),
-                context = canvas.getContext('2d');
-
             markCell = new MarkCell({
-                context: context,
-                width: WIDTH,
-                height: HEIGHT
+                context: canvas.getContext('2d'),
+                width: width,
+                height: height,
+                cellSize: cellSize
             });
         },
 
@@ -37,9 +34,8 @@ var Game = function (window, document, options) {
             tick();
         };
 
-
-    window.onload = function () {
-        initialize();
-        setInterval(render, TIME_INTERVAL);
+    return {
+        initialize: initialize,
+        render: render
     };
 };
