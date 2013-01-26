@@ -1,6 +1,8 @@
 describe("Cell", function() {
   "use strict";
 
+  var Cell = Life.Cell;
+
   it("knows its x-coordinates", function() {
     expect(Cell({x: 2, y: 10}).coordinates.x).toEqual(2);
   });

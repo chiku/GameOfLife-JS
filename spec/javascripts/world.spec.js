@@ -1,6 +1,9 @@
 describe("World", function() {
   "use strict";
 
+  var Cell = Life.Cell,
+      World = Life.World;
+
   describe("when coordinates match", function() {
     it("knows that it contains a cell", function() {
       var world = World();
