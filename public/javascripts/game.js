@@ -7,12 +7,12 @@ var Game = function (options) {
         cellSize = options.cellSize,
         currentWorld = options.world,
         previousWorld = options.world,
-        canvas = options.canvas,
+        context = options.context,
         markCell,
 
         initialize = function (options) {
             markCell = new MarkCell({
-                context: canvas.getContext('2d'),
+                context: context,
                 width: width,
                 height: height,
                 cellSize: cellSize
