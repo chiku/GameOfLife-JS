@@ -11,6 +11,7 @@
                 var canvas = document.getElementById('world'),
                     context = canvas.getContext('2d'),
                     TIME_INTERVAL = 100,
+                    timer,
 
                     world = World()
                             .addCell(Cell({x: 0, y: 0}))
@@ -31,9 +32,14 @@
                     game = Game({
                         markCell: markCell,
                         world: world
-                    });
+                    }),
 
-                setInterval(game.render, TIME_INTERVAL);
+                    loop = function () {
+                       game.render();
+                       timer = setTimeout(loop, TIME_INTERVAL);
+                    };
+
+                timer = setTimeout(loop, TIME_INTERVAL);
             };
 
         return {
