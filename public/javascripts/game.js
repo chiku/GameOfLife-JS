@@ -2,7 +2,7 @@
     var Game = function (options) {
         "use strict";
 
-        var MarkCell = Life.MarkCell,
+        var MarkCell = window.Life.MarkCell,
             markCell = options.markCell,
             currentWorld = options.world,
             previousWorld = options.world,

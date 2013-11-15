@@ -2,8 +2,8 @@
     var World = function () {
         "use strict";
 
-        var Cell = Life.Cell,
-            Rules = Life.Rules,
+        var Cell = window.Life.Cell,
+            Rules = window.Life.Rules,
             cells = [],
             shadows = [],
             corners = [{x:-1,y:-1}, {x:-1,y:0}, {x:-1,y:1}, {x:0,y:-1},

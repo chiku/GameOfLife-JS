@@ -2,10 +2,10 @@
     var Main = function () {
         "use strict";
 
-        var World = Life.World,
-            Game = Life.Game,
-            MarkCell = Life.MarkCell,
-            Cell = Life.Cell,
+        var World = window.Life.World,
+            Game = window.Life.Game,
+            MarkCell = window.Life.MarkCell,
+            Cell = window.Life.Cell,
 
             load = function () {
                 var canvas = document.getElementById('world'),
