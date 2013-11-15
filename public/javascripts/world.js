@@ -1,4 +1,4 @@
-(function (window, document) {
+(function (window) {
     var World = function () {
         "use strict";
 
@@ -126,7 +126,7 @@
             dump: dump
         };
     };
-    
+
     window.Life = window.Life || {};
     window.Life.World = World;
-}(window, document, undefined));
+}(window, undefined));

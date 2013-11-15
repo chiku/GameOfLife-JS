@@ -1,4 +1,4 @@
-(function (window, document) {
+(function (window) {
     var Cell = function (options) {
         "use strict";
 
@@ -35,4 +35,4 @@
 
     window.Life = window.Life || {};
     window.Life.Cell = Cell;
-}(window, document, undefined));
+}(window, undefined));

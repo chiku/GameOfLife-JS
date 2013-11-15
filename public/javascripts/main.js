@@ -1,4 +1,4 @@
-(function (window, document) {
+(function (window) {
     var Main = function () {
         "use strict";
 
@@ -49,4 +49,4 @@
 
     window.Life = window.Life || {};
     window.Life.Main = Main;
-}(window, document, undefined));
+}(window, undefined));

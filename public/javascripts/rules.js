@@ -1,4 +1,4 @@
-(function (window, document) {
+(function (window) {
     var Rules = function () {
         "use strict";
 
@@ -26,4 +26,4 @@
 
     window.Life = window.Life || {};
     window.Life.Rules = Rules;
-}(window, document, undefined));
+}(window, undefined));
