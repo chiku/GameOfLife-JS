@@ -8,7 +8,7 @@
             shadows = [],
             corners = [{x:-1,y:-1}, {x:-1,y:0}, {x:-1,y:1}, {x:0,y:-1},
                        {x:0,y:1}, {x:1,y:-1}, {x:1,y:0}, {x:1,y:1}],
-            rules = Rules(),
+            rules = new Rules(),
 
             allCells = function() {
                 return cells;
@@ -31,7 +31,7 @@
                 }).filter(function (coordinates) {
                     return !hasCellAt(coordinates) && !hasShadowAt(coordinates);
                 }).map(function (coordinates) {
-                    return Cell(coordinates);
+                    return new Cell(coordinates);
                 }).forEach(function (cell) {
                     shadows.push(cell);
                 });
@@ -69,7 +69,7 @@
                     entities().filter(function (entity) {
                         return rule(neighbourCountFor(entity));
                     }).forEach(function (entity) {
-                        newWorld.addCell(Cell(entity.coordinates));
+                        newWorld.addCell(new Cell(entity.coordinates));
                     });
                 };
             },
@@ -85,7 +85,7 @@
             }),
 
             tick = function () {
-                var newWorld = World();
+                var newWorld = new World();
                 carryForwardCellsInto(newWorld);
                 carryForwardShadowsInto(newWorld);
                 return newWorld;

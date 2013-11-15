@@ -10,9 +10,8 @@
             canvas = document.getElementById('world'),
             context = canvas.getContext('2d'),
             TIME_INTERVAL = 100,
-            timer,
 
-            world = World()
+            world = new World()
                 .addCell(new Cell({x: 0, y: 0}))
                 .addCell(new Cell({x: 1, y: -1}))
                 .addCell(new Cell({x: 2, y: -1}))
@@ -35,9 +34,9 @@
 
             load = function() {
                 var loop = function() {
-                    game.render();
-                    timer = setTimeout(loop, TIME_INTERVAL);
-                },
+                        game.render();
+                        timer = setTimeout(loop, TIME_INTERVAL);
+                    },
 
                     timer = setTimeout(loop, TIME_INTERVAL);
             };
