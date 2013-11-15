@@ -35,6 +35,7 @@
             load = function() {
                 var loop = function() {
                         game.render();
+                        game.tick();
                         timer = setTimeout(loop, TIME_INTERVAL);
                     },
 

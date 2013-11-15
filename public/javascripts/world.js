@@ -3,12 +3,10 @@
         "use strict";
 
         var Cell = window.Life.Cell,
-            Rules = window.Life.Rules,
             cells = [],
             shadows = [],
             corners = [{x:-1,y:-1}, {x:-1,y:0}, {x:-1,y:1}, {x:0,y:-1},
                        {x:0,y:1}, {x:1,y:-1}, {x:1,y:0}, {x:1,y:1}],
-            rules = new Rules(),
 
             allCells = function() {
                 return cells;
@@ -61,36 +59,6 @@
                 }).length;
             },
 
-            carryForwardFor = function (options) {
-                var entities = options.entities,
-                    rule = options.rule;
-
-                return function (newWorld) {
-                    entities().filter(function (entity) {
-                        return rule(neighbourCountFor(entity));
-                    }).forEach(function (entity) {
-                        newWorld.addCell(new Cell(entity.coordinates));
-                    });
-                };
-            },
-
-            carryForwardCellsInto = carryForwardFor({
-                entities: allCells,
-                rule: rules.carryLiveCellForward
-            }),
-
-            carryForwardShadowsInto = carryForwardFor({
-                entities: allShadows,
-                rule: rules.carryDeadCellForward
-            }),
-
-            tick = function () {
-                var newWorld = new World();
-                carryForwardCellsInto(newWorld);
-                carryForwardShadowsInto(newWorld);
-                return newWorld;
-            },
-
             dumpFor = function(entities) {
                 return function() {
                     entities().forEach(function (entity) {
@@ -122,7 +90,7 @@
             hasShadowAt: hasShadowAt,
             neighbourCountFor: neighbourCountFor,
             cells: allCells,
-            tick: tick,
+            shadows: allShadows,
             dump: dump
         };
     };
