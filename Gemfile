@@ -7,5 +7,5 @@ group :development, :test do
 end
 
 group :test do
-  gem 'jasmine', "1.3.0"
+  gem 'jasmine', '~>2.0.0'
 end
