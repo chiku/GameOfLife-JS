@@ -3,7 +3,10 @@
 var http = require('http'),
     util = require('util'),
     server = require('node-static'),
-    fileServer = new server.Server('./public');
+    fileServer = new server.Server('./public'),
+    port = parseInt(process.env.PORT, 10) || 5000;
+
+console.log("Listening on " + port);
 
 http.createServer(function (request, response) {
     request.addListener('end', function () {
@@ -16,4 +19,4 @@ http.createServer(function (request, response) {
             }
         });
     }).resume();
-}).listen(8081);
+}).listen(port);
