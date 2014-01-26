@@ -12,7 +12,7 @@
 
             addCellsToCurrentWorld = function (cells) {
                 cells.forEach(function (cell) {
-                    currentWorld.addCell(new Cell(cell.coordinates))
+                    currentWorld.addCell(new Cell(cell.coordinates));
                 });
             },
 
