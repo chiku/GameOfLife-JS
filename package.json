@@ -1,5 +1,9 @@
 {
+  "name": "GameOfLife",
   "author": "Chirantan Mitra <chirantan.mitra@gmail.com>",
+  "description": "Conway's game of life",
+  "license": "MIT",
+  "version": "0.1.0",
   "dependencies": {
     "node-static": "~0.7.3"
   },
@@ -13,15 +17,11 @@
     "karma-jasmine": "~0.1.5",
     "karma-spec-reporter": "0.0.8"
   },
-  "description": "Conway's game of life",
-  "name": "GameOfLife",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "http://github.com/chiku/GameOfLife-JS.git"
   },
   "scripts": {
     "test": "node_modules/.bin/grunt"
-  },
-  "version": "0.1.0"
+  }
 }
