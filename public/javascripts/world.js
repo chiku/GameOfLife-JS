@@ -37,7 +37,7 @@
 
             removeOldShadowAt = function (cell) {
                 shadows = shadows.filter(function (shadow) {
-                    return !shadow.isAt(cell.coordinates);
+                    return !shadow.isAt(cell.coordinates());
                 });
             },
 
