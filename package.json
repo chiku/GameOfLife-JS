@@ -1,13 +1,14 @@
 {
   "author": "Chirantan Mitra <chirantan.mitra@gmail.com>",
   "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-karma": "~0.6.2",
     "karma": "~0.10.9",
     "karma-jasmine": "~0.1.5",
     "karma-coverage": "~0.1.4",
-    "karma-spec-reporter": "0.0.8",
-    "grunt": "~0.4.2",
-    "grunt-karma": "~0.6.2",
-    "grunt-contrib-jshint": "~0.8.0"
+    "karma-spec-reporter": "0.0.8"
   },
   "description": "Conway's game of life",
   "name": "GameOfLife",
@@ -17,7 +18,7 @@
     "url": "http://github.com/chiku/GameOfLife-JS.git"
   },
   "scripts": {
-    "test": "node_modules/.bin/karma start config/karma.conf.js"
+    "test": "node_modules/.bin/grunt"
   },
   "version": "0.1.0"
 }
