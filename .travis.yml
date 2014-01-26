@@ -1,4 +1,4 @@
-language: ruby
-rvm:
-  - "2.0.0"
-script: bundle exec rake jasmine:ci
+language: node_js
+node_js:
+  - "0.10"
+script: grunt
