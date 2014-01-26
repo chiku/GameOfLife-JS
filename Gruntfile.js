@@ -9,7 +9,7 @@ module.exports = function(grunt) {
             }
         },
         jshint: {
-            files: ['public/javascripts/**/*.js', 'config/**/*.js', 'Gruntfile.js'],
+            files: ['public/javascripts/**/*.js', 'config/**/*.js', '*.js'],
             options: {
                 strict: true,
                 undef: true,
