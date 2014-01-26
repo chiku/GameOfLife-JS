@@ -1,13 +1,13 @@
 (function(window, document, undefined) {
     "use strict";
 
-    var Main = function() {
-        var World = window.Life.World,
-            Game = window.Life.Game,
-            MarkCell = window.Life.MarkCell,
-            Cell = window.Life.Cell,
+    var World = window.Life.World,
+        Game = window.Life.Game,
+        MarkCell = window.Life.MarkCell,
+        Cell = window.Life.Cell;
 
-            canvas = document.getElementById('world'),
+    var Main = function() {
+        var canvas = document.getElementById('world'),
             context = canvas.getContext('2d'),
             TIME_INTERVAL = 100,
 

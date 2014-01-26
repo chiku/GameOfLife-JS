@@ -15,7 +15,7 @@
                 return {
                     x: this.x,
                     y: this.y
-                }
+                };
             },
 
             coordinatesDisplacedTo = function (displacement) {
