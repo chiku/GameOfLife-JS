@@ -1,7 +1,7 @@
-(function (window) {
-    var Game = function (options) {
-        "use strict";
+(function (window, undefined) {
+    "use strict";
 
+    var Game = function (options) {
         var Cell = window.Life.Cell,
             Rules = window.Life.Rules,
             World = window.Life.World,
@@ -57,4 +57,4 @@
 
     window.Life = window.Life || {};
     window.Life.Game = Game;
-}(window, undefined));
+}(window));

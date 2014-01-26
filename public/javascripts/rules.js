@@ -1,7 +1,7 @@
-(function (window) {
-    var Rules = function () {
-        "use strict";
+(function (window, undefined) {
+    "use strict";
 
+    var Rules = function () {
         var neighboursNeededForLiveCellToBeAlive = [2, 3],
 
             neighboursNeededForDeadCellToBeAlive = [3],
@@ -26,4 +26,4 @@
 
     window.Life = window.Life || {};
     window.Life.Rules = Rules;
-}(window, undefined));
+}(window));

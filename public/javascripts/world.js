@@ -1,7 +1,7 @@
-(function (window) {
-    var World = function () {
-        "use strict";
+(function (window, undefined) {
+    "use strict";
 
+    var World = function () {
         var Cell = window.Life.Cell,
             cells = [],
             shadows = [],
@@ -97,4 +97,4 @@
 
     window.Life = window.Life || {};
     window.Life.World = World;
-}(window, undefined));
+}(window));
