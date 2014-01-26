@@ -1,10 +1,9 @@
 (function (window, undefined) {
     "use strict";
 
-    var Cell = window.Life.Cell;
-
     var World = function () {
-        var cells = [],
+        var Cell = window.Life.Cell,
+            cells = [],
             shadows = [],
             corners = [{x:-1,y:-1}, {x:-1,y:0}, {x:-1,y:1}, {x:0,y:-1},
                        {x:0,y:1}, {x:1,y:-1}, {x:1,y:0}, {x:1,y:1}],

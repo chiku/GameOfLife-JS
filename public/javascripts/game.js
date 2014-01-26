@@ -1,12 +1,11 @@
 (function (window, undefined) {
     "use strict";
 
-    var Cell = window.Life.Cell,
-        Rules = window.Life.Rules,
-        World = window.Life.World;
-
     var Game = function (options) {
-        var markCell = options.markCell,
+        var Cell = window.Life.Cell,
+            Rules = window.Life.Rules,
+            World = window.Life.World,
+            markCell = options.markCell,
             currentWorld = options.world,
             previousWorld = options.world,
             rules = new Rules(),
