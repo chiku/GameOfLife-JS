@@ -1,0 +1,23 @@
+{
+  "author": "Chirantan Mitra <chirantan.mitra@gmail.com>",
+  "devDependencies": {
+    "karma": "~0.10.9",
+    "karma-jasmine": "~0.1.5",
+    "karma-coverage": "~0.1.4",
+    "karma-spec-reporter": "0.0.8",
+    "grunt": "~0.4.2",
+    "grunt-karma": "~0.6.2",
+    "grunt-contrib-jshint": "~0.8.0"
+  },
+  "description": "Conway's game of life",
+  "name": "GameOfLife",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/chiku/GameOfLife-JS.git"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/karma start config/karma.conf.js"
+  },
+  "version": "0.1.0"
+}
