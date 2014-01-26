@@ -1,7 +1,7 @@
-(function (window) {
-    var MarkCell = function (options) {
-        "use strict";
+(function (window, undefined) {
+    "use strict";
 
+    var MarkCell = function (options) {
         var height = options.height,
             width = options.width,
             context = options.context,
@@ -30,4 +30,4 @@
 
     window.Life = window.Life || {};
     window.Life.MarkCell = MarkCell;
-}(window, undefined));
+}(window));

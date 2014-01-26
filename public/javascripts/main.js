@@ -1,7 +1,7 @@
-(function(window, document) {
-    var Main = function() {
-        "use strict";
+(function(window, document, undefined) {
+    "use strict";
 
+    var Main = function() {
         var World = window.Life.World,
             Game = window.Life.Game,
             MarkCell = window.Life.MarkCell,
@@ -49,4 +49,4 @@
 
     window.Life = window.Life || {};
     window.Life.Main = Main;
-}(window, document, undefined));
+}(window, document));

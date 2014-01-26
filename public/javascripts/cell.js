@@ -1,7 +1,7 @@
-(function (window) {
-    var Cell = function (options) {
-        "use strict";
+(function (window, undefined) {
+    "use strict";
 
+    var Cell = function (options) {
         var x = options.x,
             y = options.y,
 
@@ -35,4 +35,4 @@
 
     window.Life = window.Life || {};
     window.Life.Cell = Cell;
-}(window, undefined));
+}(window));
