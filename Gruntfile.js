@@ -13,9 +13,8 @@ module.exports = function(grunt) {
             options: {
                 strict: true,
                 undef: true,
-                globals: {
-                    console: true
-                }
+                browser: true,
+                node: true
             }
         }
     });
