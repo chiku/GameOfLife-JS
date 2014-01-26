@@ -2,27 +2,35 @@
     "use strict";
 
     var Cell = function (options) {
-        var x = options.x,
-            y = options.y,
+        if (!(this instanceof Cell)) {
+            return new Cell(options);
+        }
 
-            coordinates = {
-                x: x,
-                y: y
+        this.x = options.x;
+        this.y = options.y;
+    };
+
+    Cell.prototype = (function() {
+        var coordinates = function() {
+                return {
+                    x: this.x,
+                    y: this.y
+                }
             },
 
             coordinatesDisplacedTo = function (displacement) {
                 return {
-                    x: x + displacement.x,
-                    y: y + displacement.y
+                    x: this.x + displacement.x,
+                    y: this.y + displacement.y
                 };
             },
 
             isAt = function (coordinates) {
-                return x === coordinates.x && y === coordinates.y;
+                return this.x === coordinates.x && this.y === coordinates.y;
             },
 
             dump = function () {
-                console.log('(' + x + ', ' + y + ')');
+                console.log('(' + this.x + ', ' + this.y + ')');
             };
 
         return {
@@ -31,7 +39,7 @@
             isAt: isAt,
             dump: dump
         };
-    };
+    }());
 
     window.Life = window.Life || {};
     window.Life.Cell = Cell;

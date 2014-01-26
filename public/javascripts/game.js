@@ -12,7 +12,7 @@
 
             addCellsToCurrentWorld = function (cells) {
                 cells.forEach(function (cell) {
-                    currentWorld.addCell(new Cell(cell.coordinates));
+                    currentWorld.addCell(new Cell(cell.coordinates()));
                 });
             },
 
@@ -41,10 +41,10 @@
 
             render = function () {
                 previousWorld.cells().forEach(function (cell) {
-                    markCell.deadAt(cell.coordinates);
+                    markCell.deadAt(cell.coordinates());
                 });
                 currentWorld.cells().forEach(function (cell) {
-                    markCell.aliveAt(cell.coordinates);
+                    markCell.aliveAt(cell.coordinates());
                 });
             };
 
