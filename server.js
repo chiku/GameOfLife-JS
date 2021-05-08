@@ -1,22 +1,34 @@
-'use strict';
+/* eslint-disable no-console */
 
-var http = require('http'),
-    util = require('util'),
-    server = require('node-static'),
-    fileServer = new server.Server('./public'),
-    port = parseInt(process.env.PORT, 10) || 5000;
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
 
-console.log("Listening on " + port);
+const basePath = path.join(__dirname, 'dist');
+const port = parseInt(process.env.PORT, 10) || 5000;
 
-http.createServer(function (request, response) {
-    request.addListener('end', function () {
-        fileServer.serve(request, response, function (err, result) {
-            if (err) {
-                util.error("Error serving " + request.url + " - " + err.message);
+console.log(`${new Date().toUTCString()}: Listening on port ${port}`);
 
-                response.writeHead(err.status, err.headers);
-                response.end();
-            }
-        });
-    }).resume();
+function serve(req, res, filePath) {
+  const { method, url } = req;
+  const stream = fs.createReadStream(path.join(basePath, filePath));
+  stream.on('error', (err) => {
+    console.error(`${new Date().toUTCString()}: Error serving ${method} ${url} from ${filePath}:, ${JSON.stringify(err)}`);
+    res.writeHead(404);
+    res.end();
+  });
+  stream.pipe(res);
+}
+
+http.createServer((req, res) => {
+  const { method, url } = req;
+  console.log(`${new Date().toUTCString()}: Received ${method} ${url}`);
+
+  if (url === '/') {
+    serve(req, res, 'index.html');
+  } else {
+    serve(req, res, req.url);
+  }
+
+  console.log(`${new Date().toUTCString()}: Served ${method} ${url}`);
 }).listen(port);

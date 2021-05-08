@@ -1,29 +1,15 @@
-(function (window, undefined) {
-    "use strict";
+const neighboursNeededForLiveCellToBeAlive = [2, 3];
 
-    var Rules = function () {
-        var neighboursNeededForLiveCellToBeAlive = [2, 3],
+const neighboursNeededForDeadCellToBeAlive = [3];
 
-            neighboursNeededForDeadCellToBeAlive = [3],
+class Rules {
+  static carryLiveCellForward(neighbourCount) {
+    return neighboursNeededForLiveCellToBeAlive.some((count) => neighbourCount === count);
+  }
 
-            carryLiveCellForward = function (neighbourCount) {
-                return neighboursNeededForLiveCellToBeAlive.some(function (count) {
-                    return neighbourCount === count;
-                });
-            },
+  static carryDeadCellForward(neighbourCount) {
+    return neighboursNeededForDeadCellToBeAlive.some((count) => neighbourCount === count);
+  }
+}
 
-            carryDeadCellForward = function (neighbourCount) {
-                return neighboursNeededForDeadCellToBeAlive.some(function (count) {
-                    return neighbourCount === count;
-                });
-            };
-
-        return {
-            carryLiveCellForward: carryLiveCellForward,
-            carryDeadCellForward: carryDeadCellForward
-        };
-    };
-
-    window.Life = window.Life || {};
-    window.Life.Rules = Rules;
-}(window));
+module.exports = Rules;

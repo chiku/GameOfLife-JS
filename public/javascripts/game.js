@@ -1,60 +1,49 @@
-(function (window, undefined) {
-    "use strict";
+const Cell = require('./cell');
+const Rules = require('./rules');
+const World = require('./world');
 
-    var Game = function (options) {
-        var Cell = window.Life.Cell,
-            Rules = window.Life.Rules,
-            World = window.Life.World,
-            markCell = options.markCell,
-            currentWorld = options.world,
-            previousWorld = options.world,
-            rules = new Rules(),
+class Game {
+  constructor({ world, markCell }) {
+    this.currentWorld = world;
+    this.previousWorld = world;
+    this.markCell = markCell;
+  }
 
-            addCellsToCurrentWorld = function (cells) {
-                cells.forEach(function (cell) {
-                    currentWorld.addCell(new Cell(cell.coordinates()));
-                });
-            },
+  addCellsToCurrentWorld(cells) {
+    cells.forEach((cell) => {
+      this.currentWorld.addCell(new Cell(cell.coordinates()));
+    });
+  }
 
-            carryForwardCellsIntoCurrentWorld = function () {
-                var cellsRemainAlive = previousWorld.cells().filter(function (cell) {
-                    return rules.carryLiveCellForward(previousWorld.neighbourCountFor(cell));
-                });
+  carryForwardCellsIntoCurrentWorld() {
+    const cellsRemainAlive = this.previousWorld.cells
+      .filter((cell) => Rules.carryLiveCellForward(this.previousWorld.neighbourCountFor(cell)));
 
-                addCellsToCurrentWorld(cellsRemainAlive);
-            },
+    this.addCellsToCurrentWorld(cellsRemainAlive);
+  }
 
-            carryForwardShadowsIntoCurrentWorld = function () {
-                var cellsComeAlive = previousWorld.shadows().filter(function (cell) {
-                    return rules.carryDeadCellForward(previousWorld.neighbourCountFor(cell));
-                });
+  carryForwardShadowsIntoCurrentWorld() {
+    const cellsComeAlive = this.previousWorld.shadows
+      .filter((cell) => Rules.carryDeadCellForward(this.previousWorld.neighbourCountFor(cell)));
 
-                addCellsToCurrentWorld(cellsComeAlive);
-            },
+    this.addCellsToCurrentWorld(cellsComeAlive);
+  }
 
-            tick = function () {
-                previousWorld = currentWorld;
-                currentWorld = new World();
-                carryForwardCellsIntoCurrentWorld();
-                carryForwardShadowsIntoCurrentWorld();
-            },
+  tick() {
+    this.previousWorld = this.currentWorld;
+    this.currentWorld = new World();
+    this.carryForwardCellsIntoCurrentWorld();
+    this.carryForwardShadowsIntoCurrentWorld();
+  }
 
-            render = function () {
-                previousWorld.cells().forEach(function (cell) {
-                    markCell.deadAt(cell.coordinates());
-                });
-                currentWorld.cells().forEach(function (cell) {
-                    markCell.aliveAt(cell.coordinates());
-                });
-            };
+  render() {
+    this.previousWorld.cells.forEach(((cell) => {
+      this.markCell.deadAt(cell.coordinates());
+    }));
+    this.currentWorld.cells.forEach(((cell) => {
+      this.markCell.aliveAt(cell.coordinates());
+    }));
+  }
+}
 
-        return {
-            render: render,
-            tick: tick,
-            currentWorld: function () { return currentWorld; }
-        };
-    };
-
-    window.Life = window.Life || {};
-    window.Life.Game = Game;
-}(window));
+module.exports = Game;

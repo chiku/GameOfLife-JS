@@ -1,33 +1,31 @@
-(function (window, undefined) {
-    "use strict";
+const ALIVE_COLOUR = '#cc3366';
+const DEAD_COLOUR = '#acc8ac';
 
-    var MarkCell = function (options) {
-        var height = options.height,
-            width = options.width,
-            context = options.context,
-            size = options.cellSize,
+class MarkCell {
+  constructor({
+    height, width, context, cellSize,
+  }) {
+    this.height = height;
+    this.width = width;
+    this.context = context;
+    this.cellSize = cellSize;
+  }
 
-            ALIVE_COLOUR = "#cc3366",
-            DEAD_COLOUR = "#acc8ac",
+  drawAtWithColour({ colour, x, y }) {
+    const x1 = x * this.cellSize + this.width / 2 + this.cellSize / 2;
+    const y1 = y * this.cellSize + this.height / 2 + this.cellSize / 2;
 
-            drawAtWithColour = function (colour) {
-                return function (coordinates) {
-                    var x = coordinates.x,
-                        y = coordinates.y,
-                        x1 = x * size + width / 2 + size / 2,
-                        y1 = y * size + height / 2 + size / 2;
+    this.context.fillStyle = colour;
+    this.context.fillRect(x1, y1, this.cellSize - 1, this.cellSize - 1);
+  }
 
-                    context.fillStyle = colour;
-                    context.fillRect(x1, y1, size - 1, size - 1);
-                };
-            };
+  aliveAt({ x, y }) {
+    this.drawAtWithColour({ colour: ALIVE_COLOUR, x, y });
+  }
 
-        return {
-            aliveAt: drawAtWithColour(ALIVE_COLOUR),
-            deadAt: drawAtWithColour(DEAD_COLOUR)
-        };
-    };
+  deadAt({ x, y }) {
+    this.drawAtWithColour({ colour: DEAD_COLOUR, x, y });
+  }
+}
 
-    window.Life = window.Life || {};
-    window.Life.MarkCell = MarkCell;
-}(window));
+module.exports = MarkCell;

@@ -1,52 +1,37 @@
-(function(window, document, undefined) {
-    "use strict";
+const Cell = require('./cell');
+const World = require('./world');
+const Game = require('./game');
+const MarkCell = require('./mark.cell');
 
-    var Main = function() {
-        var World = window.Life.World,
-            Game = window.Life.Game,
-            MarkCell = window.Life.MarkCell,
-            Cell = window.Life.Cell,
+const canvas = document.getElementById('world');
+const context = canvas.getContext('2d');
+const TIME_INTERVAL = 100;
 
-            canvas = document.getElementById('world'),
-            context = canvas.getContext('2d'),
-            TIME_INTERVAL = 100,
+const markCell = new MarkCell({
+  context,
+  width: canvas.width,
+  height: canvas.height,
+  cellSize: 4,
+});
 
-            world = new World()
-                .addCell(new Cell({x: 0, y: 0}))
-                .addCell(new Cell({x: 1, y: -1}))
-                .addCell(new Cell({x: 2, y: -1}))
-                .addCell(new Cell({x: 3, y: -1}))
-                .addCell(new Cell({x: -3, y: -1}))
-                .addCell(new Cell({x: -2, y: -1}))
-                .addCell(new Cell({x: -2, y: 1})),
+const world = new World()
+  .addCell(new Cell({ x: 0, y: 0 }))
+  .addCell(new Cell({ x: 1, y: -1 }))
+  .addCell(new Cell({ x: 2, y: -1 }))
+  .addCell(new Cell({ x: 3, y: -1 }))
+  .addCell(new Cell({ x: -3, y: -1 }))
+  .addCell(new Cell({ x: -2, y: -1 }))
+  .addCell(new Cell({ x: -2, y: 1 }));
 
-            markCell = new MarkCell({
-                context: context,
-                width: canvas.width,
-                height: canvas.height,
-                cellSize: 4
-            }),
+const game = new Game({
+  markCell,
+  world,
+});
 
-            game = new Game({
-                markCell: markCell,
-                world: world
-            }),
+function loop() {
+  game.render();
+  game.tick();
+  setTimeout(loop, TIME_INTERVAL);
+}
 
-            load = function() {
-                var loop = function() {
-                        game.render();
-                        game.tick();
-                        timer = setTimeout(loop, TIME_INTERVAL);
-                    },
-
-                    timer = setTimeout(loop, TIME_INTERVAL);
-            };
-
-        return {
-            load: load
-        };
-    };
-
-    window.Life = window.Life || {};
-    window.Life.Main = Main;
-}(window, document));
+loop();

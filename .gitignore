@@ -1,5 +1,7 @@
-.ruby*
+# OS
 .DS_Store
-coverage
+
+# node
 node_modules
-vendor
+.parcel-cache
+dist

@@ -1,42 +1,46 @@
-describe("Cell", function() {
-  "use strict";
+const Code = require('@hapi/code');
+const Lab = require('@hapi/lab');
 
-  var Cell = Life.Cell;
+const { expect } = Code;
+const { describe, it } = exports.lab = Lab.script();
 
-  it("knows its x-coordinates", function() {
-    expect(Cell({x: 2, y: 10}).coordinates().x).toEqual(2);
+const Cell = require('../../public/javascripts/cell');
+
+describe('Cell', () => {
+  it('knows its x-coordinates', () => {
+    expect(new Cell({ x: 2, y: 10 }).coordinates().x).to.equal(2);
   });
 
-  it("knows its y-coordinates", function() {
-    expect(Cell({x: 2, y: 10}).coordinates().y).toEqual(10);
+  it('knows its y-coordinates', () => {
+    expect(new Cell({ x: 2, y: 10 }).coordinates().y).to.equal(10);
   });
 
-  it("knows its x-coordinates at a displacement", function() {
-    expect(Cell({x: 2, y: 10}).coordinatesDisplacedTo({x: 5, y: 8}).x).toEqual(7);
+  it('knows its x-coordinates at a displacement', () => {
+    expect(new Cell({ x: 2, y: 10 }).coordinatesDisplacedTo({ x: 5, y: 8 }).x).to.equal(7);
   });
 
-  it("knows its y-coordinates at a displacement", function() {
-    expect(Cell({x: 2, y: 10}).coordinatesDisplacedTo({x: 5, y: 8}).y).toEqual(18);
+  it('knows its y-coordinates at a displacement', () => {
+    expect(new Cell({ x: 2, y: 10 }).coordinatesDisplacedTo({ x: 5, y: 8 }).y).to.equal(18);
   });
 
-  describe("when coordinates match", function() {
-    it("is at a location", function() {
-      var cell = Cell({x: 10, y: 4});
-      expect(cell.isAt({x: 10, y: 4})).toBeTruthy();
+  describe('when coordinates match', () => {
+    it('is at a location', () => {
+      const cell = new Cell({ x: 10, y: 4 });
+      expect(cell.isAt({ x: 10, y: 4 })).to.be.true();
     });
   });
 
-  describe("when x-coordinates don't match", function() {
-    it("is not at the location", function() {
-      var cell = Cell({x: 10, y: 4});
-      expect(cell.isAt({x: -10, y: 4})).toBeFalsy();
+  describe("when x-coordinates don't match", () => {
+    it('is not at the location', () => {
+      const cell = new Cell({ x: 10, y: 4 });
+      expect(cell.isAt({ x: -10, y: 4 })).to.be.false();
     });
   });
 
-  describe("when y-coordinates don't match", function() {
-    it("is not at the location", function() {
-      var cell = Cell({x: 10, y: 4});
-      expect(cell.isAt({x: 10, y: -4})).toBeFalsy();
+  describe("when y-coordinates don't match", () => {
+    it('is not at the location', () => {
+      const cell = new Cell({ x: 10, y: 4 });
+      expect(cell.isAt({ x: 10, y: -4 })).to.be.false();
     });
   });
 });

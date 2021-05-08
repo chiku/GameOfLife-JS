@@ -4,24 +4,26 @@
   "description": "Conway's game of life",
   "license": "MIT",
   "version": "0.1.0",
-  "dependencies": {
-    "node-static": "~0.7.3"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-cli": "~0.1.13",
-    "grunt-contrib-jshint": "~0.8.0",
-    "grunt-karma": "~0.6.2",
-    "karma": "~0.10.9",
-    "karma-coverage": "~0.1.4",
-    "karma-jasmine": "~0.1.5",
-    "karma-spec-reporter": "0.0.8"
+    "@hapi/code": "^8.0.3",
+    "@hapi/lab": "^24.2.1",
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "parcel": "^2.0.0-beta.2"
   },
   "repository": {
     "type": "git",
     "url": "http://github.com/chiku/GameOfLife-JS.git"
   },
   "scripts": {
-    "test": "node_modules/.bin/grunt"
+    "test": "lab ./spec/**/*.spec.js --coverage",
+    "lint": "eslint ./public server.js",
+    "lint:fix": "npm run lint -- --fix",
+    "dev": "parcel serve ./public/index.html",
+    "start": "node ./server.js",
+    "build": "parcel build ./public/index.html",
+    "postinstall": "npm run build"
   }
 }

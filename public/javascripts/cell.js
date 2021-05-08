@@ -1,46 +1,28 @@
-(function (window, undefined) {
-    "use strict";
+class Cell {
+  constructor({ x, y }) {
+    this.x = x;
+    this.y = y;
+  }
 
-    var Cell = function (options) {
-        if (!(this instanceof Cell)) {
-            return new Cell(options);
-        }
+  coordinates() {
+    return { x: this.x, y: this.y };
+  }
 
-        this.x = options.x;
-        this.y = options.y;
+  coordinatesDisplacedTo({ x, y }) {
+    return {
+      x: this.x + x,
+      y: this.y + y,
     };
+  }
 
-    Cell.prototype = (function() {
-        var coordinates = function() {
-                return {
-                    x: this.x,
-                    y: this.y
-                };
-            },
+  isAt(coordinates) {
+    return this.x === coordinates.x && this.y === coordinates.y;
+  }
 
-            coordinatesDisplacedTo = function (displacement) {
-                return {
-                    x: this.x + displacement.x,
-                    y: this.y + displacement.y
-                };
-            },
+  /* eslint-disable no-console */
+  dump() {
+    console.log(`(${this.x}, ${this.y})`);
+  }
+}
 
-            isAt = function (coordinates) {
-                return this.x === coordinates.x && this.y === coordinates.y;
-            },
-
-            dump = function () {
-                console.log('(' + this.x + ', ' + this.y + ')');
-            };
-
-        return {
-            coordinates: coordinates,
-            coordinatesDisplacedTo: coordinatesDisplacedTo,
-            isAt: isAt,
-            dump: dump
-        };
-    }());
-
-    window.Life = window.Life || {};
-    window.Life.Cell = Cell;
-}(window));
+module.exports = Cell;
