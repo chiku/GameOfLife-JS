@@ -2,11 +2,12 @@ const Code = require('@hapi/code');
 const Lab = require('@hapi/lab');
 
 const { expect } = Code;
+// eslint-disable-next-line no-multi-assign
 const { describe, it } = exports.lab = Lab.script();
 
-const Cell = require('../../public/javascripts/cell');
-const World = require('../../public/javascripts/world');
-const Game = require('../../public/javascripts/game');
+const Cell = require('../../src/javascripts/cell');
+const World = require('../../src/javascripts/world');
+const Game = require('../../src/javascripts/game');
 
 describe('Game', () => {
   describe('on a tick', () => {

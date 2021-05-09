@@ -2,9 +2,10 @@ const Code = require('@hapi/code');
 const Lab = require('@hapi/lab');
 
 const { expect } = Code;
+// eslint-disable-next-line no-multi-assign
 const { describe, it } = exports.lab = Lab.script();
 
-const Cell = require('../../public/javascripts/cell');
+const Cell = require('../../src/javascripts/cell');
 
 describe('Cell', () => {
   it('knows its x-coordinates', () => {
