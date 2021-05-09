@@ -23,7 +23,6 @@
     "lint:fix": "npm run lint -- --fix",
     "dev": "parcel serve ./public/index.html",
     "start": "node ./server.js",
-    "build": "parcel build ./public/index.html",
-    "postinstall": "npm run build"
+    "build": "parcel build ./public/index.html"
   }
 }
