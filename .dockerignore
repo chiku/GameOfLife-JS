@@ -1,3 +1,9 @@
-node_modules
-.parcel-cache
-dist
+.git/
+.gitignore
+node_modules/
+.parcel-cache/
+dist/
+test/
+LICENSE
+*.md
+*.yml
