@@ -4,7 +4,7 @@ import (
 	"context"
 	"embed"
 	"io/fs"
-	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -41,15 +41,14 @@ func (w *statusWriter) Write(b []byte) (int, error) {
 	return n, err
 }
 
-func LogHTTP(handler http.Handler, logger *log.Logger) http.HandlerFunc {
+func LogHTTP(handler http.Handler, logger *slog.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		sw := statusWriter{ResponseWriter: w}
 		handler.ServeHTTP(&sw, r)
 		duration := time.Since(start)
-		logger.Printf("Host: %s, RemoteAddr: %s, Method: %s, URI: %s, Status: %d, ResponseLength: %d, UserAgent: %s, Duration: %s\n",
-			r.Host, r.RemoteAddr, r.Method, r.RequestURI, sw.status, sw.length, r.Header.Get("User-Agent"), duration,
-		)
+		logger.Info("Handled request", "Host", r.Host, "RemoteAddr", r.RemoteAddr, "Method", r.Method, "URI", r.RequestURI,
+			"Status", sw.status, "ResponseLength", sw.length, "UserAgent", r.Header.Get("User-Agent"), "Duration", duration)
 	}
 }
 
@@ -57,11 +56,12 @@ func main() {
 	port := mustReadEnv("PORT")
 	listenAddr := ":" + port
 
-	logger := log.New(os.Stdout, "gol: ", log.LstdFlags)
+	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
 	files, err := fs.Sub(staticFiles, "dist")
 	if err != nil {
-		logger.Fatalf("Failed to substitute: %v", err)
+		logger.Error("Failed to substitute", "error", err)
+		os.Exit(1)
 	}
 
 	fs := http.FileServer(http.FS(files))
@@ -73,22 +73,24 @@ func main() {
 
 	go func() {
 		<-quit
-		logger.Println("Server is shutting down...")
+		logger.Info("Server is shutting down...")
 
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 		defer cancel()
 
 		if err := server.Shutdown(ctx); err != nil {
-			logger.Fatalf("Could not gracefully shutdown the server: %v\n", err)
+			logger.Error("Could not gracefully shutdown the server", "error", err)
+			os.Exit(1)
 		}
 		close(done)
 	}()
 
-	logger.Printf("Server is ready to handle requests at %s", listenAddr)
+	logger.Info("Server is ready to handle requests", "address", listenAddr)
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-		logger.Fatalf("Could not listen on %s: %v\n", listenAddr, err)
+		logger.Error("Could not listen", "address", listenAddr, "error", err)
+		os.Exit(1)
 	}
 
 	<-done
-	logger.Println("Server stopped")
+	logger.Info("Server stopped")
 }

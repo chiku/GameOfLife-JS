@@ -1,4 +1,4 @@
-FROM node:lts-alpine3.13 AS node-builder
+FROM node:lts-alpine3.18 AS node-builder
 
 COPY ./package.json ./package-lock.json /app/
 WORKDIR /app
@@ -7,7 +7,7 @@ COPY ./src/ /app/src/
 RUN npm run build
 
 
-FROM golang:buster AS go-builder
+FROM golang:bookworm AS go-builder
 
 COPY --from=node-builder /app/dist /app/dist/
 COPY server.go go.mod /app/
