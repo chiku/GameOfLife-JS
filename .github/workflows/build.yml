@@ -1,19 +1,32 @@
-strategy:
-  matrix:
-    node-version: ['16.x', '18.x', '20.x', '21.x']
+name: build
 
-steps:
-  - uses: actions/checkout@v4
+on:
+  push:
+  pull_request:
+  release:
 
-  - name: Use Node.js ${{ matrix.node-version }}
-    uses: actions/setup-node@v3
-    with:
-      node-version: ${{ matrix.node-version }}
+jobs:
+  build:  
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest"]
+        node-version: ['16.x', '18.x', '20.x', '21.x']
+    name: ${{ matrix.os }} (node ${{ matrix.node-version }})
+    runs-on: ${{ matrix.os }}
 
-  - run: npm ci
+    steps:
+      - uses: actions/checkout@v4
 
-  - run: npm run build
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-  - run: npm run lint
+      - run: npm ci
 
-  - run: npm test
+      - run: npm run build
+
+      - run: npm run lint
+
+      - run: npm test
